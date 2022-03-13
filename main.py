@@ -7,12 +7,16 @@ app = Flask(__name__)
 @app.route('/login', methods=['POST'])
 def login(): 
     if(request.method == 'POST'):
-        account_id = request.body['account_id']
-        password = request.body['password']
+        # Retrieve data from form
+        account_id = request.json['username']
+        password = request.json['password']
+
+        # Hash the password and compare to database
 
         # MySQL query : SELECT * FROM NURSE WHERE account_id={account_id}
 
         # return login
+        return {'_code' : 'success'}
 
 @app.route('/', methods=['GET'])
 def home():
