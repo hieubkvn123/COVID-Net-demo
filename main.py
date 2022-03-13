@@ -1,4 +1,5 @@
 import hashlib
+from django.shortcuts import render
 import jwt
 import datetime 
 from flask import Flask, request, flash
@@ -40,7 +41,7 @@ def login():
 					key=app.secret_key)
 
 				# Create a response and set access token as a cookie
-				response = make_response(redirect(url_for('user_page')))
+				response = make_response(redirect(url_for('user_prototype_page')))
 				response.set_cookie('access_token', token)
 				return response
 
@@ -54,10 +55,11 @@ def login_page():
 
 @app.route('/user', methods=['GET'])
 @token_required
-def user_page():
+def user_prototype_page():
 	token = request.cookies.get('access_token')
 	username = username_from_token(token)
-	return 'Welcome back ' + username
+
+	return render_template('user_prototype.html', **{'username' : username})
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)

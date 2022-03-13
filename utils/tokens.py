@@ -3,7 +3,7 @@ from flask import jsonify, request
 from functools import wraps
 
 secret_key = b'FYP-COVID-DEMO-2022'
-timeout_mins = 1
+timeout_mins = 60 # Expires after 1 hour
 
 # Decorator for protecting endpoints with JWT tokens
 def token_required(f):
