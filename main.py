@@ -12,6 +12,13 @@ from utils.tokens import token_required, username_from_token, secret_key, timeou
 app = Flask(__name__)
 app.secret_key = secret_key
 
+@app.route('/', methods=['GET'])
+def login_page():
+	token = request.cookies.get('access_token')
+	if(token):
+		return redirect(url_for('user_main_page'))
+	return render_template('login.html')
+
 @app.route('/login', methods=['POST'])
 def login(): 
 	if(request.method == 'POST'):
@@ -41,25 +48,27 @@ def login():
 					key=app.secret_key)
 
 				# Create a response and set access token as a cookie
-				response = make_response(redirect(url_for('user_prototype_page')))
+				response = make_response(redirect(url_for('user_main_page')))
 				response.set_cookie('access_token', token)
 				return response
 
 		# return invalid response if all of the above fails
 		return make_response('Could not verify!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
-@app.route('/', methods=['GET'])
-def login_page():
-	return render_template('login.html')
+@app.route('/logout')
+def logout():
+	response = make_response(redirect(url_for('login_page')))
+	response.delete_cookie('access_token')
 
+	return response
 
 @app.route('/user', methods=['GET'])
 @token_required
-def user_prototype_page():
+def user_main_page():
 	token = request.cookies.get('access_token')
 	username = username_from_token(token)
 
-	return render_template('user_prototype.html', **{'username' : username})
+	return render_template('user-create-record.html', **{'username' : username})
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)
