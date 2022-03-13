@@ -28,3 +28,7 @@
     width : auto;
     margin: auto;
 }
+
+table.hidden {
+    display : none
+}

@@ -10,7 +10,7 @@
 
 <!-- Insert javascript -->
 {% block scripts %}
-<script src="/static/js/upload.js"></script>
+<script src="/static/js/upload_records.js"></script>
 {% endblock %}
 
 <!-- Insert main contents -->
@@ -19,12 +19,12 @@
 {% include 'subnavbar-create-record.html' %}
 
 <!-- Main contents -->
-<table id="create-record-table">
+<table id="create-record-table" class="fadeIn hidden">
     <thead>
       <tr>
         <!-- Create records form -->
         <td rowspan="2" style="width:45%;vertical-align: top;">
-            <h2>Create Record</h2>
+            <h2 style="font-weight: 900;">Create Record</h2>
             <form id="create-record-form">
                 <!-- First Name -->
                 <label for="fname">First Name</label>
@@ -66,14 +66,14 @@
         <!-- Image Uploader -->
         <td>
             <div class="container col-md-8">
-                <div class="mb-5">
-                    <label for="Image" class="form-label">
-                        <strong>X-Ray Upload</strong>
-                    </label>
-                    <input class="form-control" type="file" id="formFile" onchange="preview()">
-                    <button onclick="clearImage()" class="btn btn-primary mt-3">Clear Image</button>
+                <div class="mb-5 custom-file">
+                    <div class="custom-file" style="display:block">
+                        <input type="file" class="custom-file-input" id="formFile" onchange="preview()">
+                        <label class="custom-file-label" for="validatedCustomFile">Choose XRay Image...</label>
+                        <button onclick="clearImage()" class="btn btn-primary mt-3">Clear Image</button>
+                    </div>
                 </div>
-                <div style="width:100%;text-align: center;">
+                <div style="width:100%;text-align: center;margin-top: 20px;">
                     <img id="frame" src="/static/media/xray_placeholder.png" class="img-fluid"/>
                 </div>
             </div>
@@ -81,9 +81,9 @@
       </tr>
 
       <!-- Diagnosis result -->
-      <tr style="vertical-align:top;width:45%">
+      <tr style="vertical-align:top;width:50%">
         <td>
-            <div class="container col-md-8 col-mt-2">
+            <div class="container col-md-8 col-mt-1">
                 <div class="mt-2">
                     <strong>Positive/Negative : </strong> <br>
                     <strong>Probability/Certainty : </strong>
