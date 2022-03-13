@@ -1,52 +1,15 @@
 import hashlib
-import sqlite3
 import jwt
 import datetime 
-from functools import wraps
-from flask import g, jsonify
 from flask import Flask, request, flash
 from flask import render_template, redirect, url_for, make_response
 
+# Import utilities
+from utils.db import execute_query 
+from utils.tokens import token_required, username_from_token, secret_key, timeout_mins
+
 app = Flask(__name__)
-app.secret_key = b'FYP-COVID-DEMO-2022'
-
-DATABASE = './fyp.db'
-
-# For getting sqlite database cursor
-def make_dicts(cursor, row):
-	return dict((cursor.description[idx][0], value)
-				for idx, value in enumerate(row))
-
-def get_db():
-	db = getattr(g, '_database', None)
-	if db is None:
-		db = g._database = sqlite3.connect(DATABASE)
-
-	db.row_factory = make_dicts
-	return db
-
-# Decorator for protecting endpoints with JWT tokens
-def token_required(f):
-	@wraps(f)
-	def decorated(*args, **kwargs):
-		token = request.cookies.get("access_token")
-
-		if(not token):
-			return jsonify({'message' : 'Token is missing'}), 401
-
-		try:
-			data = jwt.decode(token, app.secret_key)
-		except:
-			return jsonify({'message' : 'Token is invalid'}), 401
-		
-		return f(*args, **kwargs)
-
-	return decorated
-
-# Get username from the token
-def username_from_token(token):
-	data = jwt.decode(token, app.secret_key)
-	return data['username']
+app.secret_key = secret_key
 
 @app.route('/login', methods=['POST'])
 def login(): 
@@ -59,9 +22,7 @@ def login():
 		hash_password = hashlib.md5(password.encode()).hexdigest()
 
 		# Query the database for account with same username 
-		cursor = get_db().execute(f"SELECT * FROM ACCOUNT WHERE account_id='{account_id}'")
-		rows = cursor.fetchall()
-		cursor.close()
+		rows = execute_query(f"SELECT * FROM ACCOUNT WHERE account_id='{account_id}'")
 
 		# If length of results < 1 - invalid
 		if(len(rows) < 1):
@@ -75,8 +36,10 @@ def login():
 			else: # Correct password and username 
 				# Generate a JWT token 
 				token = jwt.encode({'username' : account_id, 
-					'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
+					'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=timeout_mins)},
 					key=app.secret_key)
+
+				# Create a response and set access token as a cookie
 				response = make_response(redirect(url_for('user_page')))
 				response.set_cookie('access_token', token)
 				return response
