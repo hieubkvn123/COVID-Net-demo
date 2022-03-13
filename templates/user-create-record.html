@@ -5,16 +5,92 @@
 
 <!-- Insert stylesheets -->
 {% block stylesheets %}
-{% include 'navbar.html' %}
-
+<link rel="stylesheet" href="/static/css/create_record.css"/>
 {% endblock %}
 
 <!-- Insert javascript -->
 {% block scripts %}
-
+<script src="/static/js/upload.js"></script>
 {% endblock %}
 
 <!-- Insert main contents -->
 {% block content %}
+{% include 'navbar.html' %}
+{% include 'subnavbar-create-record.html' %}
 
+<!-- Main contents -->
+<table id="create-record-table">
+    <thead>
+      <tr>
+        <!-- Create records form -->
+        <td rowspan="2" style="width:45%;vertical-align: top;">
+            <h2>Create Record</h2>
+            <form id="create-record-form">
+                <!-- First Name -->
+                <label for="fname">First Name</label>
+                <input type="text" class="form-control" name="fname" id="fname"/>
+
+                <!-- Last Name -->
+                <label for="lname">Last Name</label>
+                <input type="text" class="form-control" name="lname" id="lname"/>
+
+                <!-- NRIC/FIN -->
+                <label for="nric">NRIC/FIN</label>
+                <input type="text" class="form-control" name="nric" id="nric"/>
+
+                <!-- Gender -->
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" class="form-control">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <!-- Date of birth -->
+                <label for="dob">Date of Birth</label>
+                <input type="date" class="form-control" name="dob" id="dob"/>
+
+                <!-- Phone number -->
+                <label for="phone">Phone Number</label>
+                <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]{4}-[0-9]{4}"/>
+
+                <!-- Buttons Submit/Reset -->
+                <table style="width:100%; margin-top:20px">
+                    <tr style="width: 100%;">
+                        <td><button style="width: 100%;" type="button" class="btn btn-primary">Create Record</button></td>
+                        <td><button style="width: 100%;" type="reset" class="btn btn-primary">Reset Form</button>
+                    </tr>
+                </table>
+            </form>
+        </td>
+
+        <!-- Image Uploader -->
+        <td>
+            <div class="container col-md-8">
+                <div class="mb-5">
+                    <label for="Image" class="form-label">
+                        <strong>X-Ray Upload</strong>
+                    </label>
+                    <input class="form-control" type="file" id="formFile" onchange="preview()">
+                    <button onclick="clearImage()" class="btn btn-primary mt-3">Clear Image</button>
+                </div>
+                <div style="width:100%;text-align: center;">
+                    <img id="frame" src="/static/media/xray_placeholder.png" class="img-fluid"/>
+                </div>
+            </div>
+        </td>
+      </tr>
+
+      <!-- Diagnosis result -->
+      <tr style="vertical-align:top;width:45%">
+        <td>
+            <div class="container col-md-8 col-mt-2">
+                <div class="mt-2">
+                    <strong>Positive/Negative : </strong> <br>
+                    <strong>Probability/Certainty : </strong>
+                </div>
+            </div>
+        </td>
+      </tr>
+    </thead>
+</table>
 {% endblock %}
