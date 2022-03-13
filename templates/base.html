@@ -3,8 +3,22 @@
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <script src="/static/js/jquery.min.js"></script> 
     <script src="/static/js/axios.min.js"></script>
+    <script src="/static/js/base.js"></script>
+
+    <link rel="stylesheet" href="/static/css/base.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     {% block scripts %} {% endblock %}
     {% block stylesheets %} {% endblock %}
   </head>

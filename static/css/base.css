@@ -1,0 +1,14 @@
+.alert-danger {
+	position : fixed;
+	display : block;
+	top : 0;
+	left : 0;
+	padding : 10px;
+	width : 100%;
+}
+
+.alert-close {
+	border : none;
+	background: transparent;
+	cursor : pointer;
+}
