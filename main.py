@@ -1,5 +1,4 @@
 import hashlib
-from django.shortcuts import render
 import jwt
 import datetime 
 from flask import Flask, request, flash
