@@ -1,5 +1,5 @@
 import jwt
-from flask import jsonify, request
+from flask import jsonify, request, flash, redirect, url_for, make_response
 from functools import wraps
 
 secret_key = b'FYP-COVID-DEMO-2022'
@@ -16,6 +16,12 @@ def token_required(f):
 
 		try:
 			data = jwt.decode(token, secret_key)
+		except jwt.ExpiredSignatureError:
+			flash("Session expired", "info")
+			response = make_response(redirect(url_for('login_page')))
+			response.delete_cookie('access_token')
+
+			return response
 		except:
 			return jsonify({'message' : 'Token is invalid'}), 401
 		

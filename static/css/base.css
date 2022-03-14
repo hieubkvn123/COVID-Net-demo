@@ -1,4 +1,4 @@
-.alert-danger {
+.alert-danger, .alert-info {
 	position : fixed;
 	display : block;
 	top : 0;
