@@ -105,6 +105,6 @@ def upload_xray():
                 'msg' : 'Diagnosis recorded, file uploaded successfully ... ',
                 'payload' : {
                     'result' : result,
-                    'confidence' : f'{confidence:.2f}'
+                    'confidence' : f'{confidence*100:.2f}%'
                 }
             } 

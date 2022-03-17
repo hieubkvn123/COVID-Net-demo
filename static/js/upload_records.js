@@ -51,6 +51,13 @@ $(document).ready(() => {
                         let diagnosis_result = response.data['payload']['result']
                         let diagnosis_confidence = response.data['payload']['confidence']
 
+                        if(diagnosis_result === "negative")
+                            $("#diagnosis-result").html(diagnosis_result).css("color", "green")
+                        else 
+                            $("#diagnosis-result").html(diagnosis_result).css("color", "red")
+                            
+                        $("#confidence").html(diagnosis_confidence)
+
                         toastr.success(response.data['msg'])
                     })
                     .catch(err => {
