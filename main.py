@@ -7,9 +7,13 @@ from flask import render_template, redirect, url_for, make_response
 # Import utilities
 from utils.db import execute_query 
 from utils.tokens import token_required, username_from_token, secret_key, timeout_mins
+from records.routes import records_routes
 
 app = Flask(__name__)
 app.secret_key = secret_key
+
+# Registering routes
+app.register_blueprint(records_routes)
 
 @app.route('/', methods=['GET'])
 def login_page():
