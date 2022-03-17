@@ -1,4 +1,6 @@
+import sys
 import sqlite3
+import traceback
 from flask import g, jsonify
 
 # Database path
@@ -17,9 +19,26 @@ def get_db():
 	db.row_factory = make_dicts
 	return db
 
-def execute_query(query):
-    cursor = get_db().execute(query)
-    rows = cursor.fetchall()
-    cursor.close()
+def execute_query(query, type=None):
+	try:
+		conn = get_db()
+		cursor = conn.cursor()
+		cursor.execute(query)
+		rows = cursor.fetchall()
 
-    return rows
+		if(type in ['delete', 'update', 'insert']):
+			try:
+				conn.commit()
+				cursor.close()
+
+				return "success"
+			except:
+				traceback.print_exc(file=sys.stdout)
+				return "query_error"
+
+		cursor.close()
+
+		return rows
+	except: 
+		traceback.print_exc(file=sys.stdout)
+		return "query_error"

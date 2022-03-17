@@ -32,6 +32,7 @@ CREATE TABLE  ACCOUNT (
 
 # If a new record with the same nric comes
 # no row will be written, only diagnosis will be written
+# xray_img_url can be null
 CREATE TABLE PATIENT_RECORD (
 	nric_fin VARCHAR(10) NOT NULL,
 	phone INT NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE PATIENT_RECORD (
 	lname VARCHAR(500) NOT NULL,
 	gender VARCHAR(5) NOT NULL,
 	dob DATETIME NOT NULL,
-	xray_img_url VARCHAR(500) NOT NULL,
+	xray_img_url VARCHAR(500),
 	CONSTRAINT patient_record_pkey PRIMARY KEY (nric_fin)
 );
 
