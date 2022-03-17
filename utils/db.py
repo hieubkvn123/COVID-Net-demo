@@ -2,7 +2,7 @@ import sqlite3
 from flask import g, jsonify
 
 # Database path
-DATABASE = './fyp.db'
+DATABASE = 'db/fyp.db'
 
 # For getting sqlite database cursor
 def make_dicts(cursor, row):
