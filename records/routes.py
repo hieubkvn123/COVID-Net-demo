@@ -90,9 +90,21 @@ def upload_xray():
         result = 'positive'
         confidence = 0.83
 
+        # Store diagnosis result 
+        query = f'INSERT INTO DIAGNOSIS VALUES("{nric}", "{by_staff_id}", "{date_time}", "{result}", {confidence}, "{xray_img_url}");'
+        results = execute_query(query, type="insert")
 
-
-        return {
-            '_code' : 'success',
-            'msg' : 'Upload X-ray succeeded'
-        }
+        if(results == "query_error"):
+            return {
+                '_code' : 'failed',
+                'msg' : 'Something wrong happened'
+            }
+        else: 
+            return {
+                '_code' : 'success',
+                'msg' : 'Diagnosis recorded, file uploaded successfully ... ',
+                'payload' : {
+                    'result' : result,
+                    'confidence' : f'{confidence:.2f}'
+                }
+            } 

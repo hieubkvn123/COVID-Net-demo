@@ -16,3 +16,16 @@
 body {
 	background: #98b4d4;
 }
+
+.alert {
+	display : none;
+	position : fixed;
+	margin : auto;
+	width : 80%;
+	margin-top : 20px; 
+
+}
+
+#toast-container > .toast-error { background-color: #BD362F; }
+#toast-container > .toast-success { background-color: #1eb650; }
+#toast-container > .toast-info { background-color: #07688f; }
