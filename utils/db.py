@@ -2,9 +2,7 @@ import sys
 import sqlite3
 import traceback
 from flask import g, jsonify
-
-# Database path
-DATABASE = 'db/fyp.db'
+from config import DATABASE
 
 # For getting sqlite database cursor
 def make_dicts(cursor, row):
@@ -31,7 +29,7 @@ def execute_query(query, type=None):
 				conn.commit()
 				cursor.close()
 
-				return "success"
+				return "query_committed"
 			except:
 				traceback.print_exc(file=sys.stdout)
 				return "query_error"

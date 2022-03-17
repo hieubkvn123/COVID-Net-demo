@@ -1,9 +1,10 @@
 import jwt
 from flask import jsonify, request, flash, redirect, url_for, make_response
 from functools import wraps
+from config import SECRET_KEY, TOKEN_TIMEOUT
 
-secret_key = b'FYP-COVID-DEMO-2022'
-timeout_mins = 60 # Expires after 1 hour
+secret_key = SECRET_KEY
+timeout_mins = TOKEN_TIMEOUT # Expires after 1 hour
 
 # Decorator for protecting endpoints with JWT tokens
 def token_required(f):
