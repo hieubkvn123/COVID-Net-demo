@@ -73,10 +73,5 @@ def user_main_page():
 
 	return render_template('user-create-record.html', **{'username' : username})
 
-@app.route('/viewRecords', methods=['GET'])
-@token_required
-def test():
-	return render_template('user-list-records.html')
-
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)
