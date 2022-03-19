@@ -108,3 +108,9 @@ def upload_xray():
                     'confidence' : f'{confidence*100:.2f}%'
                 }
             } 
+
+@records_routes.route("/list")
+@token_required
+def list():
+    # Grep all records from database
+    return None
