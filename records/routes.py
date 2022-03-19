@@ -112,5 +112,58 @@ def upload_xray():
 @records_routes.route("/list")
 @token_required
 def list():
-    # Grep all records from database
-    return None
+    # Grab all records from database
+    query = f'SELECT * FROM DIAGNOSIS;'
+    results = execute_query(query, type="select")
+
+    return {
+        '_code' : 'success',
+        'msg' : 'Records retrieved successfully',
+        'payload' : results
+    }
+
+@records_routes.route("/search")
+@token_required
+def search():
+    nric, fname, lname = None, None, None (depend on input)
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input';'
+    results = execute_query(query, type="select")
+
+    return {
+        '_code' : 'success'
+        'msg' : 'Records retreived successfully'
+        'payload' : results
+    }
+
+@records_routes.route("/sort")
+@token_required
+def sort():
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input' order by nric'
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input' order by fname'
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input' order by lname'
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input' order by date'
+    query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input' order by covidstatus'
+
+@records_routes.route("/update_info")
+@token_required
+def update():
+    query = f'UPDATE PATIENT_RECORD SET fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
+    results = execute_query(query, type="update")
+
+    return {
+        '_code' : 'success'
+        'msg' : "Records updated successfully"
+        'payload' : results
+    }
+
+@records_routes.route("/delete_info")
+@toekn_required
+def delete():
+    query = f'DELETE FROM PATIENT_RECORD WHERE fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
+    results = execute_query(query, type="delete")
+
+    return {
+        '_code' : 'success'
+        'msg' : "Records deleted succesfully"
+        'payload' : results
+    }
