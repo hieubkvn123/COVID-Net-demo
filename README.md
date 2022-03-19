@@ -4,6 +4,9 @@
 This repository is a web demo for the COVID-Net model for COVID-19 image classification for 
 diagnosis.
 
+# System Diagram
+<img src="misc/FYP_System_Diagram.png"/>
+
 # Set up
 
 ## 1. Install all requirements
