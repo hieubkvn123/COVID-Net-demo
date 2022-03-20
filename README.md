@@ -4,6 +4,9 @@
 This repository is a web demo for the COVID-Net model for COVID-19 image classification for 
 diagnosis.
 
+# System Diagram
+<img src="misc/FYP_System_Diagram.png"/>
+
 # Set up
 
 ## 1. Install all requirements
@@ -24,6 +27,18 @@ $ git commit -am "Commit changes"
 $ git push heroku main 
 ```
 
+## 4. Setting up deployment server
+- 1. Go to https://github.com/hieubkvn123/COVID-Net.
+- 2. Clone the repository to a public computing server.
+- 3. Go to https://github.com/lindawangg/COVID-Net/blob/master/docs/models.md and download the COVIDNet-CXR-2 model and put it
+into the models folder of the COVID-Net repository cloned in step 1.
+- 4. Run the ``serve_model.sh`` script to deploy the covidnet model.
+- 5. (**NOTE**) If the port 8889 is not public in the computing server. Enable port 8889 using firewall-cmd:
+```bash
+ firewall-cmd --permanent --zone=public --add-port=8889/tcp
+ firewall-cmd --reload
+```
+
 # TODO
 - [x] Login functionalities.
 	- [x] Create the templates and the login form.
@@ -32,7 +47,7 @@ $ git push heroku main
 	
 - [x] Create records and diagnosis.
 	- [x] Create the Create Record form.
-	- [ ] Create the functionalities to retrieve record data and store in database.
+	- [x] Create the functionalities to retrieve record data and store in database.
 	- [ ] Create a function to redirect X-Ray image to computing server and retrieve result.
 	- [ ] Create a function to view all records in tables.
 

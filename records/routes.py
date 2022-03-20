@@ -112,6 +112,7 @@ def upload_xray():
 @records_routes.route('/view', methods=['GET'])
 @token_required
 def test():
+<<<<<<< HEAD
     return render_template('user-list-records.html')
 
 @records_routes.route("/list", methods=['POST'])
@@ -220,3 +221,6 @@ def delete():
         'msg' : "Records deleted succesfully"
         'payload' : results
     }
+=======
+	return render_template('user-list-records.html')
+>>>>>>> d1d1bf729071c2729614be743dfee333051c1130
