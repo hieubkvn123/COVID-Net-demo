@@ -1,7 +1,7 @@
 import os
 import datetime
 from flask import Blueprint
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from werkzeug.utils import secure_filename
 
 from utils.db import execute_query
@@ -108,6 +108,11 @@ def upload_xray():
                     'confidence' : f'{confidence*100:.2f}%'
                 }
             } 
+
+@records_routes.route('/view', methods=['GET'])
+@token_required
+def test():
+    return render_template('user-list-records.html')
 
 @records_routes.route("/list")
 @token_required
