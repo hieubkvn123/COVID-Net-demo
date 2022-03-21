@@ -1,0 +1,66 @@
+<!-- Prototype page for main user page -->
+{% extends 'base.html' %}
+
+{% block title %} Welcome back {{ username }} {% endblock %}
+
+<!-- Insert stylesheets -->
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/create_record.css"/>
+{% endblock %}
+
+<!-- Insert javascript -->
+{% block scripts %}
+<script src="/static/js/upload_records.js"></script>
+{% endblock %}
+
+<!-- Insert main contents -->
+{% block content %}
+{% include 'navbar.html' %}
+{% include 'subnavbar-search-records.html' %}
+
+<!-- Main contents -->
+<table id="create-record-table" class="fadeIn hidden">
+    <thead>
+      <tr>
+        <!-- Create records form -->
+        <td rowspan="2" style="width:45%;vertical-align: top;">
+            <h2 style="font-weight: 900;">Search Record</h2>
+            <form id="create-record-form">
+              <!-- NRIC/FIN -->
+              <label for="nric">NRIC/FIN: </label>
+              <input type="text" class="form-control" name="nric" id="nric"/>
+
+                <!-- First Name -->
+                <label for="fname">First Name: </label>
+                <input type="text" class="form-control" name="fname" id="fname"/>
+
+                <!-- Last Name -->
+                <label for="lname">Last Name: </label>
+                <input type="text" class="form-control" name="lname" id="lname"/>
+
+                <!-- Date Registered-->
+                <label for="dob">Date Registed: </label>
+                <input type="date" class="form-control" name="dob" id="dob"/>
+
+                <!-- Covid-19 Result -->
+                <label for="gender">Covid-19 Result: </label>
+                <select id="covidResult" name="covidResult" class="form-control">
+                  <option>Select a option</option>
+                    <option value="Positive">Positive</option>
+                    <option value="Negative">Negative</option>
+                </select>
+
+                <!-- Buttons Submit/Reset -->
+                <center><table style="width:50%; margin-top:20px">
+                    <tr>
+                        <td><button style="width: 100%;" type="button" class="btn btn-primary" id="create_record_btn">Search Record</button></td>
+                    </tr>
+                </table></center>
+            </form>
+        </td>
+
+    </thead>
+</table>
+
+
+{% endblock %}

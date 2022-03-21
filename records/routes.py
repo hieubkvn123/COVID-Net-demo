@@ -33,13 +33,13 @@ def create():
 
         if(isinstance(results, list)):
             if(len(results) > 0):
-                # Update all particulars 
+                # Update all particulars
                 query = f'UPDATE PATIENT_RECORD SET fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
                 results = execute_query(query, type="update")
 
                 return {
                     '_code' : 'success',
-                    'msg' : "Patient's NRIC already exists, Updating diagnosis result and X-Ray ... "    
+                    'msg' : "Patient's NRIC already exists, Updating diagnosis result and X-Ray ... "
                 }
 
         # Record to the database
@@ -52,7 +52,7 @@ def create():
                 '_code' : 'failed',
                 'msg' : 'Something wrong happened'
             }
-        else: 
+        else:
             return {
                 '_code' : 'success',
                 'msg' : 'Record created successfully'
@@ -73,14 +73,14 @@ def upload_xray():
         if(not os.path.exists(patient_folder)):
             os.mkdir(patient_folder)
 
-        # Store image 
+        # Store image
         if xray_image and allowed_file(xray_image.filename):
             print('[INFO] Image uploaded ... ')
             file_extension = xray_image.filename.split(".")[-1]
             filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + f".{file_extension}"
             filename = secure_filename(filename)
             xray_image.save(os.path.join(IMG_UPLOAD_FOLDER, nric, filename))
-            
+
         # Gather information to create record
         xray_img_url = f'/static/images/{nric}/{filename}'
         date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -90,7 +90,7 @@ def upload_xray():
         result = 'positive'
         confidence = 0.83
 
-        # Store diagnosis result 
+        # Store diagnosis result
         query = f'INSERT INTO DIAGNOSIS VALUES("{nric}", "{by_staff_id}", "{date_time}", "{result}", {confidence}, "{xray_img_url}");'
         results = execute_query(query, type="insert")
 
@@ -99,7 +99,7 @@ def upload_xray():
                 '_code' : 'failed',
                 'msg' : 'Something wrong happened'
             }
-        else: 
+        else:
             return {
                 '_code' : 'success',
                 'msg' : 'Diagnosis recorded, file uploaded successfully ... ',
@@ -107,9 +107,24 @@ def upload_xray():
                     'result' : result,
                     'confidence' : f'{confidence*100:.2f}%'
                 }
-            } 
+            }
 
 @records_routes.route('/view', methods=['GET'])
 @token_required
 def test():
 	return render_template('user-list-records.html')
+
+@records_routes.route('/search', methods=['GET'])
+@token_required
+def search():
+    return render_template('user-search-records.html')
+
+@records_routes.route('/update', methods=['GET'])
+@token_required
+def update():
+    return render_template('user-update-records.html')
+
+@records_routes.route('/patientRecord', methods=['GET'])
+@token_required
+def patientRecord():
+    return render_template('user-patient-records.html')
