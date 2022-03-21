@@ -1,82 +1,86 @@
+<!-- Prototype page for main user page -->
 {% extends 'base.html' %}
 
-{% block title %} Dinacovid Login {% endblock %}
+{% block title %} Welcome back {{ username }} {% endblock %}
 
 <!-- Insert stylesheets -->
 {% block stylesheets %}
-<link rel='stylesheet' href='/static/css/list_records.css'/>
+<link rel="stylesheet" href="/static/css/create_record.css"/>
 {% endblock %}
 
 <!-- Insert javascript -->
 {% block scripts %}
-
+<script src="/static/js/upload_records.js"></script>
 {% endblock %}
 
 <!-- Insert main contents -->
 {% block content %}
 {% include 'navbar.html' %}
-{% include 'subnavbar-list-records.html' %}
+{% include 'subnavbar-search-records.html' %}
 
-<!-- PUT UR CODE HERE -->
-<!-- Create a list of table items -->
-<!-- Current table data are for testing purpose except th-->
-<br>
-<h2>Result of Search</h2>
-<form class="view-records-table">
-  <div class="sort">
-    <select name="sortby" id="sortby">
-      <option>Sort by: </option>
-      <option value="nric">NRIC</option>
-      <option value="name">Name</option>
-      <option value="dnt">Date/Time</option>
-      <option value="diagnosisR">Diagnosis Result</option>
-    </select>
-  </div>
+<!-- Main contents -->
+<table id="create-record-table">
+
+        <!-- Create records form -->
+        <td rowspan="2" style="width:45%;vertical-align:top;">
+            <h2 style="font-weight: 900;">Result of Record</h2>
+            <div class="sort">
+            <select name="sortby" id="sortby">
+              <option>Sort by: </option>
+              <option value="nric">NRIC</option>
+              <option value="name">Name</option>
+              <option value="dnt">Date/Time</option>
+              <option value="diagnosisR">Diagnosis Result</option>
+            </select>
+          </div>
 <br>
 <br>
   <table>
-    <tr>
-      <th>NRIC</th>
-      <th>Name</th>
-      <th>Date/Time</th>
-      <th>Diagnosis Result</th>
+    <tr class="border">
+      <th class="border">NRIC</th>
+      <th class="border">Name</th>
+      <th class="border">Date/Time</th>
+      <th class="border">Diagnosis Result</th>
     </tr>
-    <tr>
-      <td>Alfreds Futterkiste</td>
-      <td>Maria Anders</td>
-      <td>Germany</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Alfreds Futterkiste</td>
+      <td class="border">Maria Anders</td>
+      <td class="border">Germany</td>
+      <td class="border">yes</td>
     </tr>
-    <tr>
-      <td>Centro comercial Moctezuma</td>
-      <td>Francisco Chang</td>
-      <td>Mexico</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Centro comercial Moctezuma</td>
+      <td class="border">Francisco Chang</td>
+      <td class="border">Mexico</td>
+      <td class="border">yes</td>
     </tr>
-    <tr>
-      <td>Ernst Handel</td>
-      <td>Roland Mendel</td>
-      <td>Austria</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Ernst Handel</td>
+      <td class="border">Roland Mendel</td>
+      <td class="border">Austria</td>
+      <td class="border">yes</td>
     </tr>
-    <tr>
-      <td>Island Trading</td>
-      <td>Helen Bennett</td>
-      <td>UK</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Island Trading</td>
+      <td class="border">Helen Bennett</td>
+      <td class="border">UK</td>
+      <td class="border" >yes</td>
     </tr>
-    <tr>
-      <td>Laughing Bacchus Winecellars</td>
-      <td>Yoshi Tannamuri</td>
-      <td>Canada</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Laughing Bacchus Winecellars</td>
+      <td class="border">Yoshi Tannamuri</td>
+      <td class="border">Canada</td>
+      <td class="border">yes</td>
     </tr>
-    <tr>
-      <td>Magazzini Alimentari Riuniti</td>
-      <td>Giovanni Rovelli</td>
-      <td>Italy</td>
-      <td>yes</td>
+    <tr class="border">
+      <td class="border">Magazzini Alimentari Riuniti</td>
+      <td class="border">Giovanni Rovelli</td>
+      <td class="border">Italy</td>
+      <td class="border">yes</td>
     </tr>
   </table>
-</form>
+
+</table>
+
+
 {% endblock %}

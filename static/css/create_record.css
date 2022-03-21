@@ -1,6 +1,6 @@
 #create-record-table {
-    height:80%; 
-    width:80%; 
+    height:80%;
+    width:80%;
     overflow : scroll;
     background-color: white;
     padding : 20px;
@@ -31,4 +31,39 @@
 
 table.hidden {
     display : none
+}
+
+table
+{
+  font-family: arial, sans-serif;
+  width: 100%;
+}
+
+td, th
+{
+  text-align: left;
+  padding: 8px;
+}
+
+h2
+{
+  font-family: arial, sans-serif;
+}
+
+.sort
+{
+  float: right;
+}
+
+.border
+{
+  border: 1px solid black;
+}
+a
+{
+  color: White;
+}
+a:hover,active,visited{
+  text-decoration: none;
+  color: White;
 }
