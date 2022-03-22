@@ -112,7 +112,6 @@ def upload_xray():
 @records_routes.route('/view', methods=['GET'])
 @token_required
 def test():
-<<<<<<< HEAD
     return render_template('user-list-records.html')
 
 @records_routes.route("/list", methods=['POST'])
@@ -120,7 +119,7 @@ def test():
 def list():
     if(request.method == 'POST'):
         # Grab all records from database
-        query = f'SELECT * FROM DIAGNOSIS;'
+        query = f'SELECT * FROM PATIENT_RECORD;'
         results = execute_query(query, type="select")
 
     return {
@@ -133,8 +132,8 @@ def list():
 @token_required
 def search():
     if(request.method == 'POST'):
-        nric, fname, lname = None, None, None (depend on input)
-        query = f'SELECT * FROM DIAGNOSIS WHERE nric, fname, last, date, covidstatus equal to 'input';'
+        nric, fname, lname = None, None, None #depend on input
+        query = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}";'
         results = execute_query(query, type="select")
 
     return {
@@ -147,58 +146,58 @@ def search():
 @token_required
 def sort():
     if(request.method == 'POST'):
-        nric, fname, lname, date, covid_status = None, None, None, None, None (depend on input)
-        query_nric = f'SELECT * FROM DIAGNOSIS WHERE nric="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by nric;'
-        query_fname = f'SELECT * FROM DIAGNOSIS WHERE nric="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by fname;'
-        query_lname = f'SELECT * FROM DIAGNOSIS WHERE nric="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by lname;'
-        query_date = f'SELECT * FROM DIAGNOSIS WHERE nric="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by date;'
-        query_covid_status = f'SELECT * FROM DIAGNOSIS WHERE nric="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by covid_status;'
+        nric, fname, lname, date, covid_status = None, None, None, None, None #depend on input
+        query_nric = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by nric;'
+        query_fname = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by fname;'
+        query_lname = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by lname;'
+        query_date = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by date;'
+        query_covid_status = f'SELECT * FROM PATIENT_RECORD WHERE nric_fin="{nric}, fname="{fname}", lname="{lname}", date="{date_register}", covid_status="{covid_status}" order by covid_status;'
 
-    if (sort_button_clicked == query_nric):
-        results = execute_query(query, type="select")
-        return {
-            '_code' : 'success'
-            'msg' : 'Records retreived successfully'
-            'payload' : results
-        }
+        if (request.form['cmd'] == 'nric'):
+            results = execute_query(query_nric, type="select")
+            return {
+                '_code' : 'success'
+                'msg' : 'Records retreived successfully'
+                'payload' : results
+            }
 
-    if (sort_button_clicked == query_fname):
-        results = execute_query(query, type="select")
-        return {
-            '_code' : 'success'
-            'msg' : 'Records retreived successfully'
-            'payload' : results
-        }
+        if (request.form['cmd'] == 'fname'):
+            results = execute_query(query_fname, type="select")
+            return {
+                '_code' : 'success'
+                'msg' : 'Records retreived successfully'
+                'payload' : results
+            }
 
-    if (sort_button_clicked == query_lname):
-        results = execute_query(query, type="select")
-        return {
-            '_code' : 'success'
-            'msg' : 'Records retreived successfully'
-            'payload' : results
-        }
+        if (request.form['cmd'] == 'lname'):
+            results = execute_query(query_lname, type="select")
+            return {
+                '_code' : 'success'
+                'msg' : 'Records retreived successfully'
+                'payload' : results
+            }
 
-    if (sort_button_clicked == query_date):
-        results = execute_query(query, type="select")
-        return {
-            '_code' : 'success'
-            'msg' : 'Records retreived successfully'
-            'payload' : results
-        }
+        if (request.form['cmd'] == 'date'):
+            results = execute_query(query_date, type="select")
+            return {
+                '_code' : 'success'
+                'msg' : 'Records retreived successfully'
+                'payload' : results
+            }
 
-    if (sort_button_clicked == query_covid_status):
-        results = execute_query(query, type="select")
-        return {
-            '_code' : 'success'
-            'msg' : 'Records retreived successfully'
-            'payload' : results
-        }
+        if (request.form['cmd'] == 'covid_status'):
+            results = execute_query(query_covid_status, type="select")
+            return {
+                '_code' : 'success'
+                'msg' : 'Records retreived successfully'
+                'payload' : results
+            }
 
 @records_routes.route("/update_info", methods=['POST'])
 @token_required
 def update():
     if(request.method == 'POST'):
-        nric, fname, lname = None, None, None (depend on input)
+        nric, fname, lname = None, None, None #depend on input
         query = f'UPDATE PATIENT_RECORD SET fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
         results = execute_query(query, type="update")
 
@@ -212,8 +211,8 @@ def update():
 @toekn_required
 def delete():
     if(request.method == 'POST'):
-        nric, fname, lname = None, None, None (depend on input) 
-        query = f'DELETE FROM PATIENT_RECORD WHERE fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
+        nric, fname, lname = None, None, None #depend on input
+        query = f'DELETE FROM PATIENT_RECORD WHERE nric_fin="{nric}";'
         results = execute_query(query, type="delete")
 
     return {
@@ -221,6 +220,5 @@ def delete():
         'msg' : "Records deleted succesfully"
         'payload' : results
     }
-=======
+
 	return render_template('user-list-records.html')
->>>>>>> d1d1bf729071c2729614be743dfee333051c1130
