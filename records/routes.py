@@ -220,5 +220,3 @@ def delete():
         'msg' : "Records deleted succesfully"
         'payload' : results
     }
-
-	return render_template('user-list-records.html')
