@@ -219,4 +219,4 @@ def delete():
         '_code' : 'success'
         'msg' : "Records deleted succesfully"
         'payload' : results
-    }
+    }   
