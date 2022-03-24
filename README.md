@@ -48,7 +48,7 @@ into the models folder of the COVID-Net repository cloned in step 1.
 - [x] Create records and diagnosis.
 	- [x] Create the Create Record form.
 	- [x] Create the functionalities to retrieve record data and store in database.
-	- [ ] Create a function to redirect X-Ray image to computing server and retrieve result.
+	- [x] Create a function to redirect X-Ray image to computing server and retrieve result.
 	- [ ] Create a function to view all records in tables.
 
 # REFERENCES
