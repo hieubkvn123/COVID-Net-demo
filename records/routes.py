@@ -1,5 +1,6 @@
 import os
 import datetime
+import requests
 from flask import Blueprint
 from flask import request, jsonify, render_template
 from werkzeug.utils import secure_filename
@@ -7,6 +8,7 @@ from werkzeug.utils import secure_filename
 from utils.db import execute_query
 from utils.tokens import token_required, username_from_token
 from config import IMG_UPLOAD_FOLDER, ALLOWED_EXTENSIONS
+from config import COMPUTING_SERVER_IP, COMPUTING_SERVER_PORT
 
 records_routes = Blueprint("records", __name__, url_prefix="/records")
 
@@ -87,8 +89,13 @@ def upload_xray():
         by_staff_id = username_from_token(token)
 
         # Dummy diagnosis result
-        result = 'positive'
-        confidence = 0.83
+        url = f'http://{COMPUTING_SERVER_IP}:{COMPUTING_SERVER_PORT}/predict_single_image'
+        with open(os.path.join(IMG_UPLOAD_FOLDER, nric, filename), 'rb') as f:
+            files = {'xray' : f}
+            res = requests.post(url, files=files).json()
+        
+        result = res['_label']
+        confidence = res['_confidence']
 
         # Store diagnosis result
         query = f'INSERT INTO DIAGNOSIS VALUES("{nric}", "{by_staff_id}", "{date_time}", "{result}", {confidence}, "{xray_img_url}");'

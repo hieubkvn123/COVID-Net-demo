@@ -3,3 +3,5 @@ TOKEN_TIMEOUT = 60
 DATABASE = 'db/fyp.db'
 IMG_UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+COMPUTING_SERVER_IP = '103.140.38.46'
+COMPUTING_SERVER_PORT = '8889'
