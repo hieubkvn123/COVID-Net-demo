@@ -19,20 +19,19 @@
 {% include 'subnavbar-list-records.html' %}
 
 <!-- Main contents -->
-<table id="create-record-table">
-
-        <!-- Create records form -->
-        <td rowspan="2" style="width:45%;vertical-align:top;">
-            <h2 style="font-weight: 900;">Result of Record</h2>
-            <div class="sort">
-            <select name="sortby" id="sortby">
-              <option>Sort by: </option>
-              <option value="nric">NRIC</option>
-              <option value="name">Name</option>
-              <option value="dnt">Date/Time</option>
-              <option value="diagnosisR">Diagnosis Result</option>
-            </select>
-          </div>
+<table id="create-record-table" class="fadeIn hidden">
+<!-- Create records form -->
+<td rowspan="2" style="width:45%;vertical-align:top;">
+    <h2 style="font-weight: 900;">Patient Records</h2>
+    <div class="sort">
+    <select name="sortby" id="sortby" class="form-control">
+      <option>Sort by: </option>
+      <option value="nric">NRIC</option>
+      <option value="name">Name</option>
+      <option value="dnt">Date/Time</option>
+      <option value="diagnosisR">Diagnosis Result</option>
+    </select>
+  </div>
 <br>
 <br>
   <table>
