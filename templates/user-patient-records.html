@@ -15,8 +15,9 @@
 
 <!-- Insert main contents -->
 {% block content %}
+{% set active_page = "patient_record" %}
 {% include 'navbar.html' %}
-{% include 'subnavbar-search-records.html' %}
+{% include 'subnavbar.html' %}
 
 <!-- Main contents -->
 <table id="create-record-table" class="fadeIn hidden">

@@ -15,8 +15,9 @@
 
 <!-- Insert main contents -->
 {% block content %}
+{% set active_page = "list_record" %}
 {% include 'navbar.html' %}
-{% include 'subnavbar-list-records.html' %}
+{% include 'subnavbar.html' %}
 
 <!-- Main contents -->
 <table class="record-table fadeIn hidden" style="max-height:80vh">
