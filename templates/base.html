@@ -6,8 +6,8 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-          <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="alert alert-{{ category }}">
+          <button type="button" class="close"><span>&times;</span></button>
           {{ message }}
           </div>
         {% endfor %}
@@ -17,21 +17,20 @@
     <script src="/static/js/axios.min.js"></script>
     <script src="/static/js/toastr.min.js"></script>
 
-    <script src="/static/js/base.js"></script>
-
     <link rel="stylesheet" href="/static/css/toastr.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
     <link rel="stylesheet" href="/static/css/base.css"/>
 
+    <script src="/static/js/base.js"></script>
 
-    <link rel = "icon" href = "/static/media/app_logo.png" type = "image/x-icon">
+    <link rel = "icon" href = "/static/media/app_logo.png" type = "image/x-icon"/>
     {% block scripts %} {% endblock %}
     {% block stylesheets %} {% endblock %}
   </head>
-  <body>
-    {% block content %} 
+<body>
+  {% block content %} 
 
-    {% endblock %}
-  </body>
+  {% endblock %}
+</body>
 </html>

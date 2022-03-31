@@ -35,19 +35,19 @@
   </div>
 <br>
 <br>
-  <table>
-    <tr class="border">
-      <th class="border">NRIC</th>
-      <th class="border">Name</th>
-      <th class="border">Date-Time</th>
-      <th class="border">Diagnosis Result</th>
+  <table class="table-striped">
+    <tr>
+      <th  class="_border">NRIC</th>
+      <th  class="_border">Name</th>
+      <th  class="_border">Date-Time</th>
+      <th  class="_border">Diagnosis Result</th>
     </tr>
-    {% for record in records %}
-      <tr class="border">
-        <td class="border">{{ record['patient_nric_fin'] }}</td>
-        <td class="border">{{ record['name'] }}</td>
-        <td class="border">{{ record['date_time'] }}</td>
-        <td class="border" style="color: {{ 'red' if record['result'] == 'positive' else 'green'}}">{{ record['result'] }}</td>
+    {% for i in range(records|length) %}
+      <tr class="_border record-list-item">
+        <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
+        <td  class="_border">{{ records[i]['name'] }}</td>
+        <td  class="_border">{{ records[i]['date_time'] }}</td>
+        <td  class="_border" style="color: {{ 'red' if records[i]['result'] == 'positive' else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
       </tr>
     {% endfor %}
     </table>

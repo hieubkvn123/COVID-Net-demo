@@ -10,20 +10,14 @@
 .alert-close {
 	border : none;
 	background: transparent;
-	cursor : pointer;
+}
+
+.alert-close:hover {
+	cursor: pointer;
 }
 
 body {
 	background: #98b4d4;
-}
-
-.alert {
-	display : none;
-	position : fixed;
-	margin : auto;
-	width : 80%;
-	margin-top : 20px; 
-
 }
 
 #toast-container > .toast-error { background-color: #BD362F; }

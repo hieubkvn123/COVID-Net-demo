@@ -67,3 +67,8 @@ a:hover,active,visited{
 text-decoration: none;
 color: White;
 }
+
+.record-list-item:hover {
+  cursor: pointer;
+  font-weight : 900;
+}
