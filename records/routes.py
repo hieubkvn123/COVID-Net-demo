@@ -2,7 +2,7 @@ import os
 import datetime
 import requests
 from flask import Blueprint
-from flask import request, jsonify, render_template
+from flask import request, render_template
 from werkzeug.utils import secure_filename
 
 from utils.db import execute_query
@@ -116,22 +116,39 @@ def upload_xray():
                 }
             }
 
-@records_routes.route('/view', methods=['GET'])
+@records_routes.route('/list', methods=['GET'])
 @token_required
-def test():
-	return render_template('user-list-records.html')
+def list_view():
+    token = request.cookies.get('access_token')
+    username = username_from_token(token)
+
+    # Get all records and return
+    query = "SELECT d.patient_nric_fin, pr.fname || ' ' || pr.lname AS name, d.date_time, d.result FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin ORDER BY d.date_time;"
+    results = execute_query(query)
+    print(results)
+
+    return render_template('user-list-records.html', **{'username' : username, 'records' : results})
 
 @records_routes.route('/search', methods=['GET'])
 @token_required
-def search():
-    return render_template('user-search-records.html')
+def search_view():
+    token = request.cookies.get('access_token')
+    username = username_from_token(token) 
+
+    return render_template('user-search-records.html', **{'username' : username})
 
 @records_routes.route('/update', methods=['GET'])
 @token_required
-def update():
-    return render_template('user-update-records.html')
+def update_view():
+    token = request.cookies.get('access_token')
+    username = username_from_token(token)
 
-@records_routes.route('/patientRecord', methods=['GET'])
+    return render_template('user-update-records.html', **{'username' : username})
+
+@records_routes.route('/create', methods=['GET'])
 @token_required
-def patientRecord():
-    return render_template('user-patient-records.html')
+def create_view():
+    token = request.cookies.get('access_token')
+    username = username_from_token(token)
+
+    return render_template('user-create-record.html', **{'username' : username})

@@ -1,4 +1,4 @@
-#create-record-table {
+.record-table {
     height:80%;
     width:80%;
     overflow : scroll;
@@ -10,7 +10,7 @@
     border-radius: 20px;
     box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
 }
-#create-record-table td {
+.record-table td {
     padding : 20px;
 }
 

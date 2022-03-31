@@ -19,7 +19,7 @@
 {% include 'subnavbar-list-records.html' %}
 
 <!-- Main contents -->
-<table id="create-record-table" class="fadeIn hidden">
+<table class="record-table fadeIn hidden" style="max-height:80vh">
 <!-- Create records form -->
 <td rowspan="2" style="width:45%;vertical-align:top;">
     <h2 style="font-weight: 900;">Patient Records</h2>
@@ -38,47 +38,18 @@
     <tr class="border">
       <th class="border">NRIC</th>
       <th class="border">Name</th>
-      <th class="border">Date/Time</th>
+      <th class="border">Date-Time</th>
       <th class="border">Diagnosis Result</th>
     </tr>
-    <tr class="border">
-      <td class="border">Alfreds Futterkiste</td>
-      <td class="border">Maria Anders</td>
-      <td class="border">Germany</td>
-      <td class="border">negative</td>
-    </tr>
-    <tr class="border">
-      <td class="border">Centro comercial Moctezuma</td>
-      <td class="border">Francisco Chang</td>
-      <td class="border">Mexico</td>
-      <td class="border">negative</td>
-    </tr>
-    <tr class="border">
-      <td class="border">Ernst Handel</td>
-      <td class="border">Roland Mendel</td>
-      <td class="border">Austria</td>
-      <td class="border">negative</td>
-    </tr>
-    <tr class="border">
-      <td class="border">Island Trading</td>
-      <td class="border">Helen Bennett</td>
-      <td class="border">UK</td>
-      <td class="border" >negative</td>
-    </tr>
-    <tr class="border">
-      <td class="border">Laughing Bacchus Winecellars</td>
-      <td class="border">Yoshi Tannamuri</td>
-      <td class="border">Canada</td>
-      <td class="border">positive</td>
-    </tr>
-    <tr class="border">
-      <td class="border">Magazzini Alimentari Riuniti</td>
-      <td class="border">Giovanni Rovelli</td>
-      <td class="border">Italy</td>
-      <td class="border">negative</td>
-    </tr>
-  </table>
-
+    {% for record in records %}
+      <tr class="border">
+        <td class="border">{{ record['patient_nric_fin'] }}</td>
+        <td class="border">{{ record['name'] }}</td>
+        <td class="border">{{ record['date_time'] }}</td>
+        <td class="border" style="color: {{ 'red' if record['result'] == 'positive' else 'green'}}">{{ record['result'] }}</td>
+      </tr>
+    {% endfor %}
+    </table>
 </table>
 
 

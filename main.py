@@ -68,10 +68,8 @@ def logout():
 @app.route('/user', methods=['GET'])
 @token_required
 def user_main_page():
-	token = request.cookies.get('access_token')
-	username = username_from_token(token)
-
-	return render_template('user-create-record.html', **{'username' : username})
+	# To be replaced with a real user main page later
+	return redirect(url_for('records.create_view'))
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)
