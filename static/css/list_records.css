@@ -1,21 +1,69 @@
+.record-table {
+  height:80%;
+  width:80%;
+  overflow : scroll;
+  background-color: white;
+  padding : 20px;
+  margin : auto;
+  margin-top:50px;
+  margin-bottom: 50px;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+}
+.record-table td {
+  padding : 20px;
+}
+
+#create-record-form {
+  margin-top:30px;
+}
+
+#create-record-form label {
+  margin-top : 10px;
+  font-weight: bolder;
+}
+
+#frame {
+  height : 480px;
+  width : auto;
+  margin: auto;
+}
+
+table.hidden {
+  display : none
+}
+
 table
 {
-  font-family: arial, sans-serif;
-  width: 100%;
+font-family: arial, sans-serif;
+width: 100%;
 }
 
 td, th
 {
-  text-align: left;
-  padding: 8px;
+text-align: left;
+padding: 8px;
 }
 
 h2
 {
-  font-family: arial, sans-serif;
+font-family: arial, sans-serif;
 }
 
 .sort
 {
-  float: right;
+float: right;
+}
+
+.border
+{
+border: 1px solid black;
+}
+a
+{
+color: White;
+}
+a:hover,active,visited{
+text-decoration: none;
+color: White;
 }

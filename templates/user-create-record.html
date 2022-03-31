@@ -29,15 +29,15 @@
             <form id="create-record-form">
                 <!-- First Name -->
                 <label for="fname">First Name</label>
-                <input type="text" class="form-control" name="fname" id="fname"/>
+                <input type="text" class="form-control" name="fname" id="fname" placeholder="First Name"/>
 
                 <!-- Last Name -->
                 <label for="lname">Last Name</label>
-                <input type="text" class="form-control" name="lname" id="lname"/>
+                <input type="text" class="form-control" name="lname" id="lname" placeholder="Last Name"/>
 
                 <!-- NRIC/FIN -->
                 <label for="nric">NRIC/FIN</label>
-                <input type="text" class="form-control" name="nric" id="nric"/>
+                <input type="text" class="form-control" name="nric" id="nric" placeholder="Identification Number"/>
 
                 <!-- Gender -->
                 <label for="gender">Gender</label>
@@ -52,15 +52,20 @@
 
                 <!-- Phone number -->
                 <label for="phone">Phone Number</label>
-                <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]{4}-[0-9]{4}"/>
+                <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]{4}-[0-9]{4}" placeholder="Phone Number"/>
 
                 <!-- Buttons Submit/Reset -->
-                <table style="width:100%; margin-top:20px">
-                    <tr style="width: 100%;">
-                        <td><button style="width: 100%;" type="button" class="btn btn-primary" id="create_record_btn">Create Record</button></td>
-                        <td><button style="width: 100%;" type="reset" class="btn btn-primary">Reset Form</button>
-                    </tr>
-                </table>
+                <div class="container" style="width:100%; margin-top:20px">
+                    <div class="row">
+                      <div class="col-sm">
+                        <button style="width: 100%;" type="button" class="btn btn-primary" id="create_record_btn">Create Record</button>
+                      </div>
+                      <div class="col-sm">
+                        <button style="width: 100%;" type="reset" class="btn btn-primary">Reset Form</button>
+                      </div>
+                    </div>
+                  </div>
+                
             </form>
         </td>
 
@@ -74,7 +79,7 @@
                         <button onclick="clearImage()" class="btn btn-primary mt-3">Clear Image</button>
                     </div>
                 </div>
-                <div style="width:100%;text-align: center;margin-top: 20px;">
+                <div style="width:100%;text-align: center;margin-top: 20px;height:50%">
                     <img id="frame" src="/static/media/xray_placeholder.png" class="img-fluid"/>
                 </div>
             </div>
@@ -82,9 +87,9 @@
       </tr>
 
       <!-- Diagnosis result -->
-      <tr style="vertical-align:top;width:50%">
+      <tr style="width:50%">
         <td>
-            <div class="container col-md-8 col-mt-1">
+            <div class="container col-md-8 col-mt">
                 <div class="mt-2">
                     <strong>Positive/Negative : </strong> <span id="diagnosis-result"></span><br>
                     <strong>Probability/Certainty : </strong> <span id="confidence"></span>
