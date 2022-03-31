@@ -45,11 +45,18 @@ into the models folder of the COVID-Net repository cloned in step 1.
 	- [x] Create the functionalities to retrieve data from users and compare against databse.
 	- [x] Add JWT token based authentication for login function.
 	
-- [x] Create records and diagnosis.
+- [x] For prototype : Create records and diagnosis.
 	- [x] Create the Create Record form.
 	- [x] Create the functionalities to retrieve record data and store in database.
 	- [x] Create a function to redirect X-Ray image to computing server and retrieve result.
-	- [ ] Create a function to view all records in tables.
+	- [x] Create a function to view all records in tables.
+
+- [ ] For final presentation.
+	- [ ] Finish the sorting patient records functionality,
+	- [ ] Finish the search functionality.
+	- [ ] Finish the view individual patient's record functionality.
+	- [ ] Finish the update individual patient's record functionality.
+	- [ ] Finish the delete individual patient's record functionality.
 
 # REFERENCES
 - COVID-Net: A Tailored Deep Convolutional Neural Network Design for Detection of COVID-19 Cases from Chest X-Ray Images : [Paper](https://arxiv.org/abs/2003.09871)
