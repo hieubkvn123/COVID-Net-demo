@@ -1,12 +1,11 @@
-import hashlib
-import jwt
-import datetime
-from flask import Flask, request, flash
-from flask import render_template, redirect, url_for, make_response
+from flask import Flask, request
+from flask import render_template, redirect, url_for
 
 # Import utilities
-from utils.db import execute_query
-from utils.tokens import token_required, secret_key, timeout_mins
+from utils.tokens import token_required, secret_key
+
+# Include all the routers
+from auth import auth_routes
 from records import records_routes
 
 app = Flask(__name__)
@@ -14,6 +13,7 @@ app.secret_key = secret_key
 
 # Registering routes
 app.register_blueprint(records_routes)
+app.register_blueprint(auth_routes)
 
 @app.route('/', methods=['GET'])
 def login_page():
@@ -21,49 +21,6 @@ def login_page():
 	if(token):
 		return redirect(url_for('user_main_page'))
 	return render_template('login.html')
-
-@app.route('/login', methods=['POST'])
-def login():
-	if(request.method == 'POST'):
-		# Retrieve data from form
-		account_id = request.form['username']
-		password = request.form['password']
-
-		# Hash the password
-		hash_password = hashlib.md5(password.encode()).hexdigest()
-
-		# Query the database for account with same username
-		rows = execute_query(f"SELECT * FROM ACCOUNT WHERE account_id='{account_id}'")
-
-		# If length of results < 1 - invalid
-		if(len(rows) < 1):
-			flash("Invalid username. Please try again", "danger")
-			return redirect(url_for('login_page'))
-		else: # If username exists
-			real_password = rows[0]['password']
-			if(real_password != hash_password):
-				flash("Invalid password. Please try again", "danger")
-				return redirect(url_for("login_page"))
-			else: # Correct password and username
-				# Generate a JWT token
-				token = jwt.encode({'username' : account_id,
-					'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=timeout_mins)},
-					key=app.secret_key)
-
-				# Create a response and set access token as a cookie
-				response = make_response(redirect(url_for('user_main_page')))
-				response.set_cookie('access_token', token)
-				return response
-
-		# return invalid response if all of the above fails
-		return make_response('Could not verify!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
-
-@app.route('/logout')
-def logout():
-	response = make_response(redirect(url_for('login_page')))
-	response.delete_cookie('access_token')
-
-	return response
 
 @app.route('/user', methods=['GET'])
 @token_required
