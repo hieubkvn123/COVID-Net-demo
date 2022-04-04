@@ -66,8 +66,8 @@ make html
 	- [x] Create a function to redirect X-Ray image to computing server and retrieve result.
 	- [x] Create a function to view all records in tables.
 
-- [ ] Preliminaries.
-	- [ ] Document all of the existing functionalities.
+- [x] Preliminaries.
+	- [x] Document all of the existing functionalities.
 	- [ ] Compile test cases where applicable before proceeding.
 
 - [ ] For final presentation.
