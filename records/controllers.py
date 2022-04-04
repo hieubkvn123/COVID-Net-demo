@@ -15,12 +15,39 @@ from . import records_routes
 # records_routes = Blueprint("records", __name__, url_prefix="/records")
 
 def allowed_file(filename):
+    '''
+        | @Route None
+        | @Access None
+        | @Desc : Checks if an image file's extension has the correct extension as listed
+          in config.py. 
+        |
+    '''
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @records_routes.route("/create", methods=['POST'])
 @token_required
 def create():
+    '''
+        | @Route /records/create POST
+        | @Access Private
+        | @Desc : The controller for creating a record. The create record form data will be received and will be recorded into the 
+            SQLite3 database once verified.
+        * Example input data:
+
+        .. code-block:: python
+        
+            payload = {
+                'fname' : 'John',
+                'lname' : 'Doe',
+                'nric' : 'G1234567N',
+                'gender' : 'Male',
+                'dob' : '1998-01-01',
+                'phone' : '12345678'
+            } 
+        |
+    '''
+
     if(request.method == 'POST'):
         # Retrieve data from the payload
         payload = request.get_json()

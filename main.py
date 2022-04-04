@@ -21,8 +21,9 @@ def login_page():
 		| @Route / GET
 		| @Access Public/Private
 		| @Desc : First page to be seen by the users. The API will check if a JWT token exists
-		in the session. If the token exists, user will be redirected to user_main_page. Else, 
-		the login page will be rendered. 
+		  in the session. If the token exists, user will be redirected to user_main_page. Else, 
+		  the login page will be rendered. 
+		|
 	'''
 	token = request.cookies.get('access_token')
 	if(token):
@@ -36,6 +37,7 @@ def user_main_page():
 		| @Route /user GET
 		| @Access Private
 		| @Desc : The first UI displayed when users are logged in.
+		|
 	'''
 	
 	# To be replaced with a real user main page later
