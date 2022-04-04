@@ -12,6 +12,27 @@ from utils.db import execute_query
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
+	'''
+		| @Route /auth/login POST
+		| @Access Public
+		| @Desc : Login function. After the user filling in the username, password and submit the login form. 
+		  The system checks if the particulars exist in the database and whether the password is correct. If
+		  the credentials are valid, a JWT token will be generated and sent back to the client's session.
+
+		* Example data for testing:
+
+		.. code-block:: python
+
+			import requests
+
+			payload = {
+				'username' : 'nong003',
+				'password' : 'qazwsx007'
+			}
+			
+			requests.post('http://host/auth/login', data=payload)
+	'''
+
 	if(request.method == 'POST'):
 		# Retrieve data from form
 		account_id = request.form['username']
@@ -46,8 +67,13 @@ def login():
 		# return invalid response if all of the above fails
 		return make_response('Could not verify!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
-@auth_routes.route('/logout')
+@auth_routes.route('/logout', methods=['GET'])
 def logout():
+	'''
+		| @Route /auth/login GET
+		| @Access Public
+		| @Desc : Once user pressed 'Logout', the system will clear the JWT token and redirect user to login page.
+	'''
 	response = make_response(redirect(url_for('login_page')))
 	response.delete_cookie('access_token')
 

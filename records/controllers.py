@@ -32,11 +32,14 @@ def create():
         | @Route /records/create POST
         | @Access Private
         | @Desc : The controller for creating a record. The create record form data will be received and will be recorded into the 
-            SQLite3 database once verified.
-        * Example input data:
+          SQLite3 database once verified.
+          
+        * Example input data for testing:
 
         .. code-block:: python
-        
+
+            import requests
+
             payload = {
                 'fname' : 'John',
                 'lname' : 'Doe',
@@ -44,8 +47,12 @@ def create():
                 'gender' : 'Male',
                 'dob' : '1998-01-01',
                 'phone' : '12345678'
-            } 
-        |
+            }
+
+            headers = { 'Content-Type' : 'application/json' }
+            requests.post('https://host/records/create', json=payload, headers=headers)
+            
+        |  
     '''
 
     if(request.method == 'POST'):
@@ -92,6 +99,27 @@ def create():
 @records_routes.route("/upload_xray", methods=['POST'])
 @token_required
 def upload_xray():
+    '''
+        | @Route /records/upload_xray POST
+        | @Access Private
+        | @Desc : This function runs in parallel with `records.controllers.create()`. After the patient record is recorded
+            into the SQLite3 database, the uploaded x-ray image and the patient's NRIC will be forwarded to the computing server 
+            for inference. The diagnosis result and diagnosis confidence will be returned to the client.
+
+        * Example input data for testing:
+        
+        .. code-block:: python
+
+            import requests
+
+            files = {'xray' : open('path/to/file.png', 'rb')}
+            payload = {'nric' : 'G123456N'}
+
+            requests.post('https://host/records/upload_xray', data=payload, files=files)
+
+        |
+    '''
+    
     if(request.method == 'POST'):
         # For retrieving staff's account id
         token = request.cookies.get('access_token')
