@@ -39,6 +39,19 @@ into the models folder of the COVID-Net repository cloned in step 1.
  firewall-cmd --reload
 ```
 
+## 5. Building documentations
+- 1. Requirements : Install sphinx from PYI with 
+```bash
+pip3 install -U sphinx
+```
+- 2. Go to ```./docs``` and build the documentation
+```bash
+cd docs
+sphinx-apidoc -f -o . ..
+make html
+```
+- 3. Open the documentation in ```./docs/_build/html/index.html```
+
 # TODO
 - [x] Login functionalities.
 	- [x] Create the templates and the login form.
