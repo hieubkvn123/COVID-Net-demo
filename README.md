@@ -52,6 +52,8 @@ make html
 ```
 - 3. Open the documentation in ```./docs/_build/html/index.html```
 
+<br>
+
 # TODO
 - [x] Login functionalities.
 	- [x] Create the templates and the login form.
