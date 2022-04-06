@@ -72,3 +72,15 @@ color: White;
   cursor: pointer;
   font-weight : 900;
 }
+
+#sortTable th, td { white-space: nowrap; }
+div.dataTables_wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+ 
+#sortTable tr { height: 70px; }
+
+#sortTable_filter input {
+  border-radius: 5px;
+}

@@ -24,7 +24,9 @@ def list_view():
     query = "SELECT d.patient_nric_fin, pr.fname || ' ' || pr.lname AS name, d.date_time, d.result FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin ORDER BY d.date_time;"
     results = execute_query(query)
 
-    return render_template('user-list-records.html', **{'username' : username, 'records' : results})
+    all_nric = [row['patient_nric_fin'] for row in results]
+
+    return render_template('user-list-records.html', **{'username' : username, 'records' : results, 'all_nric':all_nric})
 
 @records_routes.route('/search', methods=['GET'])
 @token_required

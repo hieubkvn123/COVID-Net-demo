@@ -11,6 +11,10 @@
 <!-- Insert javascript -->
 {% block scripts %}
 <script src="/static/js/upload_records.js"></script>
+<script>
+  let all_nric = {{ all_nric | tojson }}
+</script>
+<script src="/static/js/search_records.js"></script>
 {% endblock %}
 
 <!-- Insert main contents -->
@@ -24,33 +28,28 @@
 <!-- Create records form -->
 <td rowspan="2" style="width:45%;vertical-align:top;">
     <h2 style="font-weight: 900;">Patient Records</h2>
-    <div class="sort">
-    <select name="sortby" id="sortby" class="form-control">
-      <option>Sort by: </option>
-      <option value="nric">NRIC</option>
-      <option value="name">Name</option>
-      <option value="dnt">Date/Time</option>
-      <option value="diagnosisR">Diagnosis Result</option>
-    </select>
-  </div>
 <br>
 <br>
-  <table class="table-striped">
-    <tr>
-      <th  class="_border">NRIC</th>
-      <th  class="_border">Name</th>
-      <th  class="_border">Date-Time</th>
-      <th  class="_border">Diagnosis Result</th>
-    </tr>
-    {% for i in range(records|length) %}
-      <tr class="_border record-list-item">
-        <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
-        <td  class="_border">{{ records[i]['name'] }}</td>
-        <td  class="_border">{{ records[i]['date_time'] }}</td>
-        <td  class="_border" style="color: {{ 'red' if records[i]['result'] == 'positive' else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
+  <table class="table table-striped" id="sortTable">
+    <thead>
+      <tr>
+        <th  class="_border">NRIC</th>
+        <th  class="_border">Name</th>
+        <th  class="_border">Date-Time</th>
+        <th  class="_border">Diagnosis Result</th>
       </tr>
-    {% endfor %}
-    </table>
+    </thead>
+    <tbody>
+      {% for i in range(records|length) %}
+        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible">
+          <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
+          <td  class="_border">{{ records[i]['name'] }}</td>
+          <td  class="_border">{{ records[i]['date_time'] }}</td>
+          <td  class="_border" style="color: {{ 'red' if records[i]['result'] == 'positive' else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </table>
 
 
