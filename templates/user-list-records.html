@@ -24,13 +24,14 @@
 {% include 'subnavbar.html' %}
 
 <!-- Main contents -->
+{% include 'user-info-modal.html' %}
 <table class="record-table fadeIn hidden" style="max-height:80vh">
 <!-- Create records form -->
 <td rowspan="2" style="width:45%;vertical-align:top;">
     <h2 style="font-weight: 900;">Patient Records</h2>
 <br>
 <br>
-  <table class="table table-striped" id="sortTable">
+  <table class="table hover" id="sortTable">
     <thead>
       <tr>
         <th  class="_border">NRIC</th>
@@ -41,7 +42,7 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible">
+        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible" id="{{ records[i]['patient_nric_fin'] }}">
           <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['date_time'] }}</td>
@@ -50,6 +51,7 @@
       {% endfor %}
     </tbody>
   </table>
+  </td>
 </table>
 
 

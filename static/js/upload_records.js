@@ -8,12 +8,12 @@ function clearImage() {
 }
 
 // Functions after load
-$(document).ready(() => {
+jQuery(() => {
     // For fade-in form animation
     $(".fadeIn").fadeIn('slow').removeClass('hidden')
 
     // For the upload of records
-    $("#create_record_btn").click(() => {
+    $("#create_record_btn").on("click", () => {
         // Get all form information
         let fname = $("#create-record-form #fname").val()
         let lname = $("#create-record-form #lname").val()
@@ -61,7 +61,8 @@ $(document).ready(() => {
                         toastr.success(response.data['msg'])
                     })
                     .catch(err => {
-                        toastr.error(err.response.data['msg'])
+                        if(err.response)
+                            toastr.error(err.response.data['msg'])
                     })
             }
         }
