@@ -41,7 +41,7 @@ def user_main_page():
 	'''
 	
 	# To be replaced with a real user main page later
-	return redirect(url_for('records.create_view'))
+	return redirect(url_for('records.records_views_create'))
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)
