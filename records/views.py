@@ -26,7 +26,7 @@ def list_view():
 
     all_nric = [row['patient_nric_fin'] for row in results]
 
-    return render_template('user-list-records.html', **{'username' : username, 'records' : results, 'all_nric':all_nric})
+    return render_template('user-list-records.html', **{'username' : username, 'records' : results, 'all_nric' : all_nric})
 
 @records_routes.route('/search', methods=['GET'])
 @token_required
