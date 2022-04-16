@@ -5,8 +5,8 @@ from flask import render_template, redirect, url_for
 from utils.tokens import token_required, secret_key
 
 # Include all the routers
-from auth import auth_routes
-from records import records_routes
+from modules.auth import auth_routes
+from modules.records import records_routes
 
 app = Flask(__name__)
 app.secret_key = secret_key
