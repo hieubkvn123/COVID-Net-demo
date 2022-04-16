@@ -18,8 +18,8 @@ class RecordsController:
         '''
             | @Route None
             | @Access None
-            | @Desc : Checks if an image file's extension has the correct extension as listed
-            in config.py. 
+            | @Desc : Checks if an image file's extension has the correct extension as listed in config.py.
+
             |
         '''
         return '.' in filename and \
@@ -31,7 +31,7 @@ class RecordsController:
             | @Route /records/create POST
             | @Access Private
             | @Desc : The controller for creating a record. The create record form data will be received and will be recorded into the 
-            SQLite3 database once verified.
+              SQLite3 database once verified.
             
             * Example input data for testing:
 
@@ -100,8 +100,8 @@ class RecordsController:
             | @Route /records/upload_xray POST
             | @Access Private
             | @Desc : This function runs in parallel with `records.controllers.create()`. After the patient record is recorded
-                into the SQLite3 database, the uploaded x-ray image and the patient's NRIC will be forwarded to the computing server 
-                for inference. The diagnosis result and diagnosis confidence will be returned to the client.
+              into the SQLite3 database, the uploaded x-ray image and the patient's NRIC will be forwarded to the computing server 
+              for inference. The diagnosis result and diagnosis confidence will be returned to the client.
 
             * Example input data for testing:
             
