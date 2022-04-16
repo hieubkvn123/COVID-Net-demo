@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    src.auth
+   src.entities
    src.records
 
 Module contents

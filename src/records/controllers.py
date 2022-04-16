@@ -3,6 +3,7 @@ import datetime
 import requests
 from flask import request
 from werkzeug.utils import secure_filename
+from src.entities.patient_records import PatientRecords
 
 from utils.db import execute_query
 from utils.tokens import token_required, username_from_token
@@ -13,6 +14,7 @@ from config import COMPUTING_SERVER_IP, COMPUTING_SERVER_PORT
 class RecordsController:
     def __init__(self):
         super(RecordsController, self).__init__()
+        self._entity_patient_record = PatientRecords()
 
     def allowed_file(self, filename):
         '''
@@ -65,8 +67,7 @@ class RecordsController:
             phone = payload['phone']
 
             # Check if record already exists
-            query = f"SELECT nric_fin FROM PATIENT_RECORD WHERE nric_fin='{nric}';"
-            results = execute_query(query)
+            results = self._entity_patient_record.list_by_key(nric)
 
             if(isinstance(results, list)):
                 if(len(results) > 0):
