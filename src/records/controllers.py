@@ -4,8 +4,8 @@ import requests
 from flask import request
 from werkzeug.utils import secure_filename
 from src.entities.patient_records import PatientRecords
+from src.entities.diagnosis import Diagnosis
 
-from utils.db import execute_query
 from utils.tokens import token_required, username_from_token
 from config import IMG_UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from config import COMPUTING_SERVER_IP, COMPUTING_SERVER_PORT
@@ -15,6 +15,7 @@ class RecordsController:
     def __init__(self):
         super(RecordsController, self).__init__()
         self._entity_patient_record = PatientRecords()
+        self._entity_diagnosis = Diagnosis()
 
     def allowed_file(self, filename):
         '''
@@ -68,32 +69,31 @@ class RecordsController:
 
             # Check if record already exists
             results = self._entity_patient_record.list_by_key(nric)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
 
-            if(isinstance(results, list)):
-                if(len(results) > 0):
+            # If the record exists
+            if(isinstance(results['payload'], list)):
+                if(len(results['payload']) > 0):
                     # Update all particulars
-                    query = f'UPDATE PATIENT_RECORD SET fname="{fname}", lname="{lname}", gender="{gender}", dob="{dob}", phone="{phone}" WHERE nric_fin="{nric}";'
-                    results = execute_query(query, type="update")
+                    results = self._entity_patient_record.update_by_key(nric, {
+                        'fname' : fname, 'lname' : lname, 'gender' : gender, 'dob' : dob, 'phone' : phone
+                    })
+
+                    if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
 
                     return {
                         '_code' : 'success',
                         'msg' : "Patient's NRIC already exists, Updating diagnosis result and X-Ray ... "
                     }
 
-            # Record to the database
-            query = f'INSERT INTO PATIENT_RECORD VALUES("{nric}", "{phone}", "{fname}", "{lname}", "{gender}", "{dob}");'
-            results = execute_query(query, type="insert")
+            # If not exist, Record to the database
+            results = self._entity_patient_record.insert(nric, fname, lname, dob, gender, phone)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
 
-            if(results == "query_error"):
-                return {
-                    '_code' : 'failed',
-                    'msg' : 'Something wrong happened'
-                }
-            else:
-                return {
-                    '_code' : 'success',
-                    'msg' : 'Record created successfully'
-                }
+            return {
+                '_code' : 'success',
+                'msg' : 'Record created successfully'
+            }
 
     @token_required
     def upload_xray(self):
@@ -143,7 +143,7 @@ class RecordsController:
             date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             by_staff_id = username_from_token(token)
 
-            # Dummy diagnosis result
+            # Post image to computing server for diagnosis
             url = f'http://{COMPUTING_SERVER_IP}:{COMPUTING_SERVER_PORT}/predict_single_image'
             with open(os.path.join(IMG_UPLOAD_FOLDER, nric, filename), 'rb') as f:
                 files = {'xray' : f}
@@ -153,21 +153,16 @@ class RecordsController:
             confidence = res['_confidence']
 
             # Store diagnosis result
-            query = f'INSERT INTO DIAGNOSIS VALUES("{nric}", "{by_staff_id}", "{date_time}", "{result}", {confidence}, "{xray_img_url}");'
-            results = execute_query(query, type="insert")
+            results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
 
-            if(results == "query_error"):
-                return {
-                    '_code' : 'failed',
-                    'msg' : 'Something wrong happened'
+            
+            return {
+                '_code' : 'success',
+                'msg' : 'Diagnosis recorded, file uploaded successfully ... ',
+                'payload' : {
+                    'result' : result,
+                    'confidence' : f'{confidence*100:.2f}%'
                 }
-            else:
-                return {
-                    '_code' : 'success',
-                    'msg' : 'Diagnosis recorded, file uploaded successfully ... ',
-                    'payload' : {
-                        'result' : result,
-                        'confidence' : f'{confidence*100:.2f}%'
-                    }
-                }
+            }
 

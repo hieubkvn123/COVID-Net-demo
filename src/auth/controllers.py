@@ -6,19 +6,20 @@ from flask import current_app
 from flask import request, flash, redirect, url_for, make_response
 from utils.tokens import timeout_mins
 
-from utils.db import execute_query
+from src.entities.account import Account
 
 class AuthController:
 	def __init__(self):
 		super(AuthController, self).__init__()
+		self._entity_account = Account()
 
 	def login(self):
 		'''
 			| @Route /auth/login POST
 			| @Access Public
 			| @Desc : Login function. After the user filling in the username, password and submit the login form. 
-			The system checks if the particulars exist in the database and whether the password is correct. If
-			the credentials are valid, a JWT token will be generated and sent back to the client's session.
+			  The system checks if the particulars exist in the database and whether the password is correct. If
+			  the credentials are valid, a JWT token will be generated and sent back to the client's session.
 
 			* Example data for testing:
 
@@ -43,7 +44,7 @@ class AuthController:
 			hash_password = hashlib.md5(password.encode()).hexdigest()
 
 			# Query the database for account with same username
-			rows = execute_query(f"SELECT * FROM ACCOUNT WHERE account_id='{account_id}'")
+			rows = self._entity_account.list_by_key(account_id)['payload']
 
 			# If length of results < 1 - invalid
 			if(len(rows) < 1):

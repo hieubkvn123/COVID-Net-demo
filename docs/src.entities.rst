@@ -4,6 +4,22 @@ src.entities package
 Submodules
 ----------
 
+src.entities.account module
+---------------------------
+
+.. automodule:: src.entities.account
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.entities.diagnosis module
+-----------------------------
+
+.. automodule:: src.entities.diagnosis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.entities.patient\_records module
 ------------------------------------
 

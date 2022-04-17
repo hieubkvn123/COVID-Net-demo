@@ -1,13 +1,12 @@
-from . import records_routes
-
 from flask import request, render_template
 
+from src.entities.diagnosis import Diagnosis
 from utils.tokens import token_required, username_from_token
-from utils.db import execute_query
 
 class RecordsView:
     def __init__(self):
         super(RecordsView, self).__init__()
+        self._entity_diagnosis = Diagnosis()
 
     @token_required
     def list_view(self):
@@ -25,8 +24,16 @@ class RecordsView:
         username = username_from_token(token)
 
         # Get all records and return
-        query = "SELECT d.patient_nric_fin, pr.fname || ' ' || pr.lname AS name, d.date_time, d.result FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin ORDER BY d.date_time;"
-        results = execute_query(query)
+        results = self._entity_diagnosis.list()
+        if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+        results = [
+            {
+                'patient_nric_fin' : row['patient_nric_fin'],
+                'name' : ' '.join((row['fname'], row['lname'])),
+                'date_time' : row['date_time'],
+                'result' : row['result']
+            } for row in results['payload']
+        ]
 
         all_nric = [row['patient_nric_fin'] for row in results]
 

@@ -33,7 +33,39 @@ def execute_query(query, type=None):
 		| @Route None
 		| @Access None
 		| @Desc : A shortcut function to execute an SQLite3 query without explicitly creating a connection
-		  instance and cursor for concise syntax.
+		  instance and cursor for concise syntax. The following scenarios will apply for execution of SQLite3 queries
+
+		| 1. Query executed successfully, no payload returned (insert, update, delete)
+		
+		.. code-block:: python
+
+			response = {
+				'_code' : 'query_committed'
+			}
+
+		| 2. Query executed successfully, payload returned (select)
+
+		.. code-block:: python
+			
+			response = {
+				'_code' : 'query_committed',
+				'payload' : [
+					{'field_1' : 'value_1', ...}, # Row 1
+					{'field_1' : 'value_1', ...}  # Row 2
+				]
+			}
+
+		| 3. Query failed
+
+		.. code-block:: python
+
+			response = {
+				'_code' : 'query_error',
+				'err_type' : '<Exception Class>',
+				'err_msg' : '<Exception Message>',
+				'err_trace' : '<Exception Traceback'
+			}
+			
 	'''
 
 	try:
@@ -47,14 +79,26 @@ def execute_query(query, type=None):
 				conn.commit()
 				cursor.close()
 
-				return "query_committed"
+				return { "_code" : "query_committed" }
 			except:
 				traceback.print_exc(file=sys.stdout)
-				return "query_error"
+				ex_type, ex_value, ex_traceback = sys.exc_info()
+				return { 
+					"_code" : "query_error", 
+					"err_type" : str(ex_type),
+					"err_msg" : str(ex_value),
+					"err_trace" : str(ex_traceback)
+				}
 
 		cursor.close()
 
-		return rows
+		return { "_code" : "query_committed", "payload" : rows }
 	except: 
 		traceback.print_exc(file=sys.stdout)
-		return "query_error"
+		ex_type, ex_value, ex_traceback = sys.exc_info()
+		return { 
+			"_code" : "query_error", 
+			"err_type" : str(ex_type),
+			"err_msg" : str(ex_value),
+			"err_trace" : str(ex_traceback)
+		}
