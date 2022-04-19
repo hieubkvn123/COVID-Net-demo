@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -9,7 +9,45 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <div id="patient-info-modal">
+            <form id='patient-info-form'>
+              <label for="info-nric">NRIC</label>
+              <input class='form-control' id="info-nric" name="info-nric" type="text"/>
+
+              <label for="info-fname">First Name</label>
+              <input class="form-control" id="info-fname" name="info-fname" type="text"/>
+
+              <label for="info-lname">Last Name</label>
+              <input class="form-control" id="info-lname" name="info-lname" type="text"/>
+
+              <label for="info-phone">Phone</label>
+              <input class="form-control" id="info-phone" name="info-phone" type="text"/>
+
+              <label for="info-gender">Gender</label>
+              <select id="info-gender" name="info-gender" class="form-control">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+              </select>
+
+              <label for="info-dob">Date of Birth</label>
+              <input type="date" class="form-control" name="info-dob" id="info-dob"/>
+
+              <label for="info-datetime">Diagnosed date-time</label>
+              <input type="datetime" class="form-control" name="info-datetime" id="info-datetime"/>
+
+              <label for="info-result">Result</label>
+              <input type="text" class="form-control" name="info-result" id="info-result" disabled/>
+
+              <label for="info-confidence">Confidence</label>
+              <input type="text" class="form-control" name="info-confidence" id="info-confidence" disabled/>
+            </form>
+            
+            <div id="patient-info-xray">
+              <label for="patient-info-xray-img">Lung X-Ray</label>
+              <img id='patient-info-xray-img' src="/static/media/xray_placeholder.png"/>
+            </div>
+            
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

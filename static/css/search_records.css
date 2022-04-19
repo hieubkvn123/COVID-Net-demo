@@ -1,23 +1,21 @@
-table
-{
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+#patient-info-form {
+  width : 45%; 
+  float : left
 }
 
-td, th
-{
-  border: 1px solid black;
-  text-align: left;
-  padding: 8px;
+#patient-info-xray {
+  width:50%; 
+  float:right
 }
 
-h2
-{
-  font-family: arial, sans-serif;
+#patient-info-modal label {
+  font-weight: bolder;
 }
 
-.sort
-{
-  float: right;
+#patient-info-modal input {
+  margin-bottom : 3px
+}
+
+#patient-info-xray-img {
+  width : 100%
 }
