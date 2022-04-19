@@ -28,6 +28,7 @@ CREATE TABLE  ACCOUNT (
 	CONSTRAINT account_pkey PRIMARY KEY (account_id),
 	CONSTRAINT account_fkey FOREIGN KEY (hospital_name) REFERENCES HOSPITAL(hospital_name)
 			ON DELETE CASCADE
+			ON UPDATE CASCADE
 );
 
 # If a new record with the same nric comes

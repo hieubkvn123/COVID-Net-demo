@@ -8,6 +8,7 @@ jQuery(() => {
 
     $("#sortTable_filter label").css("font-weight", "bold")
 
+    // Event handler for clicking to view a record.
     $('#sortTable tbody').on('click', 'tr', function () {
         // Extract the row
         var data = table.row( this ).data()
@@ -16,9 +17,10 @@ jQuery(() => {
         let nric = data[0]
         let datetime = data[2]
 
+        // Disable the update button by default
+        $("#info-update-btn").attr("disabled", true)
+
         // Make the modal dialog appear with information corresponding to the NRIC
-        // ... 
-        // alert(nric)
         axios.post('/records/get_diagnosis', { nric, datetime }, { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Retrieve the payload from server
@@ -37,6 +39,9 @@ jQuery(() => {
 
                 // Change image source
                 $("#patient-info-xray-img").attr("src", payload.xray_img_url)
+
+                // Change modal dialog title
+                $("#patient-info-modal-title").html(`Diagnosis no. ${payload.nric_fin} - ${payload.date_time}`)
             })
             .catch(err => {
                 if(err.response) 

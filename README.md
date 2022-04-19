@@ -70,12 +70,16 @@ make html
 	- [x] Document all of the existing functionalities.
 	- [ ] Compile test cases where applicable before proceeding.
 
-- [ ] For final presentation.
-	- [ ] Finish the sorting patient records functionality,
-	- [ ] Finish the search functionality.
-	- [ ] Finish the view individual patient's record functionality.
+- [x] For final presentation.
+	- [x] Finish the sorting patient records functionality,
+	- [x] Finish the search functionality.
+	- [x] Finish the view individual patient's record functionality.
 	- [ ] Finish the update individual patient's record functionality.
 	- [ ] Finish the delete individual patient's record functionality.
+
+- [ ] Further functionalities.
+	- [ ] Create an advanced search section to look for patient's diagnosis history.
+	- [ ] Create a function to create mass-prediction for multiple profiles.
 
 # REFERENCES
 - COVID-Net: A Tailored Deep Convolutional Neural Network Design for Detection of COVID-19 Cases from Chest X-Ray Images : [Paper](https://arxiv.org/abs/2003.09871)

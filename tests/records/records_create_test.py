@@ -1,5 +1,5 @@
 import requests
-from records_create_cases import _CASES
+from cases import _CREATE_RECORDS_CASES
 from argparse import ArgumentParser 
 
 parser = ArgumentParser()
@@ -27,9 +27,10 @@ with requests.Session() as s:
     fail = '\033[31m'
     reset = '\033[0m'
     
-    for _test in _CASES:
+    for _test in _CREATE_RECORDS_CASES:
         _desc = _test['description']
         _payload = _test['payload']
+
 
         r = s.post(f'{args["url"]}{args["endpoint"]}', json=_payload, headers=headers)
 

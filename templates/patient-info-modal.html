@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 id="patient-info-modal-title" class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -33,7 +33,7 @@
               <input type="date" class="form-control" name="info-dob" id="info-dob"/>
 
               <label for="info-datetime">Diagnosed date-time</label>
-              <input type="datetime" class="form-control" name="info-datetime" id="info-datetime"/>
+              <input type="datetime" class="form-control" name="info-datetime" id="info-datetime" disabled/>
 
               <label for="info-result">Result</label>
               <input type="text" class="form-control" name="info-result" id="info-result" disabled/>
@@ -51,7 +51,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Delete Record</button>
-          <button type="button" class="btn btn-primary">Update Record</button>
+          <button id="info-update-btn" type="button" class="btn btn-primary">Update Record</button>
         </div>
       </div>
     </div>

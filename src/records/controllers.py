@@ -169,6 +169,24 @@ class RecordsController:
                 'payload' : results['payload']
             }
 
+    @token_required
+    def update_diagnosis(self):
+        '''
+            | @Route /records/update_diagnosis POST
+            | @Access Private
+            | @Desc : Update a diagnosis records given the following information : nric, fname, lname, phone, gender, dob (PATIENT_RECORD table) and
+              date-time when diagnosis is created (from DIAGNOSIS). The following cases will be included,
+            
+            * 1. NRIC is not modified : When the nurse did not mistake the NRIC of the patient but some of the basic particulars are wrong, the patient
+              record attached to this NRIC will be updated with the new particular.
+            * 2. NRIC is modified : When nurses mistook the NRIC of a patient with another, the following cases will be included
+                * 2.1. The correct NRIC is already in the database : Update the basic particulars if modified and attach the diagnosis result to the 
+                  correct NRIC.
+                * 2.2. The correct NRIC is not inside the database : Create a new patient record with the particulars and the correct NRIC and attach
+                  the diagnosis result to the correct NRIC.
+
+        '''
+
 
     @token_required
     def upload_xray(self):

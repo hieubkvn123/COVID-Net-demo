@@ -21,7 +21,7 @@ def token_required(f):
 		token = request.cookies.get("access_token")
 
 		if(not token):
-			return jsonify({'message' : 'Token is missing'}), 401
+			return jsonify({'msg' : 'Token is missing'}), 401
 
 		try:
 			data = jwt.decode(token, secret_key)
@@ -32,7 +32,7 @@ def token_required(f):
 
 			return response
 		except:
-			return jsonify({'message' : 'Token is invalid'}), 401
+			return jsonify({'msg' : 'Token is invalid'}), 401
 		
 		return f(*args, **kwargs)
 
