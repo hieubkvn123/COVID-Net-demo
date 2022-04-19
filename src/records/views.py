@@ -25,7 +25,7 @@ class RecordsView:
 
         # Get all records and return
         results = self._entity_diagnosis.list()
-        if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+        if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
         results = [
             {
                 'patient_nric_fin' : row['patient_nric_fin'],

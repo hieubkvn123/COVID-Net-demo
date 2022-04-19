@@ -29,6 +29,7 @@ class Diagnosis:
             | @Desc List all diagnosis history of a patient given the patient's NRIC.
 
             .. code-block:: python 
+            
                 from src.entities.diagnosis import Diagnosis
 
                 dn_entity = Diagnosis()

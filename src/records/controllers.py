@@ -1,4 +1,5 @@
 import os
+import re
 import datetime
 import requests
 from flask import request
@@ -27,6 +28,41 @@ class RecordsController:
         '''
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    def validate_input(self, fname, lname, nric, phone):
+        '''
+            | @Route None
+            | @Access None
+            | @Desc : Check the validity of user input for the create record endpoint. The following criterias will be applied on each
+              input fields.
+
+            * fname : Contains only letters (uppercase and lowercase).
+            * lname : Contains only letters (uppercase and lowercase).
+            * nric : One uppercase letter followed by 7 digits then another uppercase letter.
+            * phone : Contains only digits.
+
+            |
+            
+        '''
+        err_msg = ""
+        nric_pattern = "^([A-Z]{1}[0-9]{7}[A-Z]{1})$"
+        name_pattern = "^[a-zA-Z]+$"
+        phon_pattern = "^[0-9]+$"
+
+        if(not re.match(nric_pattern, nric)):
+            err_msg += "NRIC must include an upper-case letter followed by 7 digits and another upper-case letter"
+
+        if(not re.match(name_pattern, fname) or not re.match(name_pattern, lname)):
+            if(err_msg != "") : err_msg += ", "
+            err_msg += "Name must include only letter from a-z or A-Z"
+        
+
+        if(not re.match(phon_pattern, phone)):
+            if(err_msg != "") : err_msg += ", "
+            err_msg += "Phone number must include only digits"
+
+        return err_msg
+
 
     @token_required
     def create(self):
@@ -67,9 +103,17 @@ class RecordsController:
             dob = payload['dob']
             phone = payload['phone']
 
+            # Check the validity of the input
+            validation_err_msg = self.validate_input(fname, lname, nric, phone)
+            if(validation_err_msg != ""):
+                return {
+                    '_code' : 'failed',
+                    'msg' : validation_err_msg
+                }, 400
+
             # Check if record already exists
             results = self._entity_patient_record.list_by_key(nric)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
 
             # If the record exists
             if(isinstance(results['payload'], list)):
@@ -79,7 +123,7 @@ class RecordsController:
                         'fname' : fname, 'lname' : lname, 'gender' : gender, 'dob' : dob, 'phone' : phone
                     })
 
-                    if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+                    if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
 
                     return {
                         '_code' : 'success',
@@ -88,7 +132,7 @@ class RecordsController:
 
             # If not exist, Record to the database
             results = self._entity_patient_record.insert(nric, fname, lname, dob, gender, phone)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
 
             return {
                 '_code' : 'success',
@@ -118,7 +162,7 @@ class RecordsController:
             datetime = payload['datetime']
 
             results = self._entity_diagnosis.get_by_id_and_datetime(nric, datetime)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
 
             return {
                 '_code' : 'success',
@@ -185,7 +229,7 @@ class RecordsController:
 
             # Store diagnosis result
             results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
 
             
             return {

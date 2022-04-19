@@ -1,4 +1,4 @@
-$(document).ready(function() {
+jQuery(() => {
     let table = $('#sortTable').DataTable({
         'pageLength' : 20
     });
