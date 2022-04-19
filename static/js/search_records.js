@@ -21,19 +21,8 @@ jQuery(() => {
         // alert(nric)
         axios.post('/records/get_diagnosis', { nric, datetime }, { 'Content-Type' : 'application/json' })
             .then(res => {
+                // Retrieve the payload from server
                 let payload = res.data['payload'][0]
-                // let nric = payload['nric_fin'] .
-                // let fname = payload['fname'] .
-                // let lname = payload['lname'] .
-                // let phone = payload['phone'] .
-                // let gender = payload['gender'] .
-                // let dob = payload['dob'] .
-                // let datetime = payload['date_time']
-                // let result = payload['result']
-                // let confidence = payload['confidence']
-                // let xray_url = payload['xray_img_url']
-
-                console.log(payload.date_time)
 
                 // Fill basic particulars
                 $("#info-nric").val(payload.nric_fin)
