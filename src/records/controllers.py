@@ -96,6 +96,37 @@ class RecordsController:
             }
 
     @token_required
+    def get_diagnosis(self):
+        '''
+            | @Route /records/get_diagnosis POST
+            | @Access Private
+            | @Desc : Get a diagnosis detail with patient's information (nric, name, ...) and diagnosis details (X-ray image, date-time diagnosed, ...)
+              given the patient's NRIC and the date-time when the diagnosis is created.
+
+            * Example input data for testing:
+
+            .. code-block:: python
+                
+                import requests
+
+                payload = { 'nric' : 'G123456N' }
+                requests.post('https://host/records/get_diagnosis', data=payload)
+        '''
+        if(request.method == 'POST'):
+            payload = request.get_json()
+            nric = payload['nric']
+            datetime = payload['datetime']
+
+            results = self._entity_diagnosis.get_by_id_and_datetime(nric, datetime)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }
+
+            return {
+                '_code' : 'success',
+                'payload' : results['payload']
+            }
+
+
+    @token_required
     def upload_xray(self):
         '''
             | @Route /records/upload_xray POST

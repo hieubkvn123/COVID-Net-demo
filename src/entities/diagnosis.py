@@ -8,6 +8,43 @@ class Diagnosis:
             "result", "confidence", "xray_img_url"
         ]
 
+    def get_by_id_and_datetime(self, nric, datetime):
+        '''
+            | @Route None
+            | @Access Private
+            | @Desc List a particular diagnosis result given the patient's NRIC and date when the
+              diagnosis is created
+        '''
+
+        query = f'SELECT * FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin  WHERE pr.nric_fin="{nric}" and d.date_time="{datetime}"'
+        results = execute_query(query)
+
+        return results
+
+
+    def list_by_id(self, nric):
+        '''
+            | @Route None
+            | @Access Private
+            | @Desc List all diagnosis history of a patient given the patient's NRIC.
+
+            .. code-block:: python 
+                from src.entities.diagnosis import Diagnosis
+
+                dn_entity = Diagnosis()
+                dn_entity.list_by_id('G1778418N')
+            
+            | is equivalent to the following SQLite3 command 
+
+            .. code-block:: sql
+
+                SELECT * FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin  WHERE pr.nric_fin='G1778418N' ORDER BY d.date_time;
+        '''
+        query = f'SELECT * FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin  WHERE pr.nric_fin="{nric}" ORDER BY d.date_time;'
+        results = execute_query(query)
+
+        return results
+
     def list(self):
         '''
             | @Route None

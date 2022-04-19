@@ -9,6 +9,7 @@ from . import views
 controller = controllers.RecordsController()
 records_routes.add_url_rule("/create", "records_controllers_create", controller.create, methods=['POST'])
 records_routes.add_url_rule("/upload_xray", "records_controllers_upload_xray", controller.upload_xray, methods=['POST'])
+records_routes.add_url_rule("/get_diagnosis", "records_controllers_get_diagnosis", controller.get_diagnosis, methods=['POST'])
 
 # Register endpoints for all view functions
 view = views.RecordsView()
