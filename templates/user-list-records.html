@@ -6,6 +6,7 @@
 <!-- Insert stylesheets -->
 {% block stylesheets %}
 <link rel="stylesheet" href="/static/css/list_records.css"/>
+<link rel="stylesheet" href="/static/css/search_records.css"/>
 {% endblock %}
 
 <!-- Insert javascript -->
@@ -22,6 +23,7 @@
 {% set active_page = "list_record" %}
 {% include 'navbar.html' %}
 {% include 'subnavbar.html' %}
+{% include 'patient-info-modal.html' %}
 
 <!-- Main contents -->
 {% include 'user-info-modal.html' %}
@@ -42,7 +44,7 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible" id="{{ records[i]['patient_nric_fin'] }}">
+        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible" id="{{ records[i]['patient_nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
           <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['date_time'] }}</td>

@@ -5,8 +5,8 @@ from flask import render_template, redirect, url_for
 from utils.tokens import token_required, secret_key
 
 # Include all the routers
-from auth import auth_routes
-from records import records_routes
+from src.auth import auth_routes
+from src.records import records_routes
 
 app = Flask(__name__)
 app.secret_key = secret_key
@@ -41,7 +41,7 @@ def user_main_page():
 	'''
 	
 	# To be replaced with a real user main page later
-	return redirect(url_for('records.create_view'))
+	return redirect(url_for('records.records_views_create'))
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True, port=8080)

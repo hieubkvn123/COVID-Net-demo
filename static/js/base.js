@@ -1,4 +1,4 @@
-$(document).ready(() => {
+jQuery(() => {
 	$(".alert-close").click(() => {
 		$(".alert").css("display", "none")
 	})
