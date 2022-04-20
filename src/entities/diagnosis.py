@@ -100,3 +100,59 @@ class Diagnosis:
         results = execute_query(query, type="insert")
 
         return results
+
+    def modify_diagnosis_nric(self, old_nric, new_nric, date_time):
+        '''
+            | @Route None
+            | @Access Private 
+            | @Desc This function is dedicated to the case when the nurse created a diagnosis with a wrong NRIC
+              and wish to modify the NRIC of the corresponding diagnosis.
+
+            .. code-block:: python
+                
+                from src.entities.diagnosis import Diagnosis
+
+                dn_entity = Diagnosis()
+                dn_entity.modify_diagnosis_nric('G12345678N', 'G87654321N', '2022-04-15 00:00:00')
+
+            | is equivalent to the following SQLite3 command:
+            
+            .. code-block:: sql
+                
+                UPDATE DIAGNOSIS SET patient_nric_fin='G87654321N' WHERE patient_nric_fin='G12345678N' AND date_time='2022-04-15 00:00:00';
+            
+            |
+
+        '''
+        query = f'UPDATE DIAGNOSIS SET patient_nric_fin="{new_nric}" WHERE patient_nric_fin="{old_nric}" AND date_time="{date_time}"'
+        results = execute_query(query, type="update")
+
+        return results
+
+    def delete_by_key_and_datetime(self, nric, date_time):
+        '''
+            | @Route None
+            | @Access Private
+            | @Desc Delete a particular patient's diagnosis result in case the result is faulty or the x-ray is mistaken.
+
+            .. code-block:: python
+                
+                from src.entities.diagnosis import Diagnosis
+
+                dn_entity = Diagnosis()
+                dn_entity.modify_diagnosis_nric('G12345678N', 'G87654321N', '2022-04-15 00:00:00')
+
+            | is equivalent to the following SQLite3 command:
+
+            .. code-block:: sql
+
+                DELETE FROM DIAGNOSIS WHERE patient_nric_fin='G12345678N' AND date_time='2022-04-15 00:00:00';
+
+            |
+
+        '''
+
+        query = f'DELETE FROM DIAGNOSIS WHERE patient_nric_fin="{nric}" AND date_time="{date_time}"'
+        results = execute_query(query, type="delete")
+
+        return results

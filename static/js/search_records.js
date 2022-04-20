@@ -1,5 +1,5 @@
 jQuery(() => {
-    let table = $('#sortTable').DataTable({
+    table = $('#sortTable').DataTable({
         'pageLength' : 20
     });
 
@@ -12,6 +12,7 @@ jQuery(() => {
     $('#sortTable tbody').on('click', 'tr', function () {
         // Extract the row
         var data = table.row( this ).data()
+        var row_id = table.row( this ).index()
 
         // Extract the NRIC from the row
         let nric = data[0]
@@ -39,6 +40,10 @@ jQuery(() => {
 
                 // Change image source
                 $("#patient-info-xray-img").attr("src", payload.xray_img_url)
+
+                // Store in local storage
+                localStorage.setItem("current_nric", payload.nric_fin)
+                localStorage.setItem("row_id", row_id)
 
                 // Change modal dialog title
                 $("#patient-info-modal-title").html(`Diagnosis no. ${payload.nric_fin} - ${payload.date_time}`)

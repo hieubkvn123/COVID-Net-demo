@@ -19,7 +19,7 @@ class RecordsView:
 
             |
         '''
-        
+        print(request.data)
         token = request.cookies.get('access_token')
         username = username_from_token(token)
 

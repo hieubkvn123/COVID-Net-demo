@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import token
 import os
 import re
 import datetime
@@ -136,6 +137,7 @@ class RecordsController:
 
             return {
                 '_code' : 'success',
+                'payload' : None,
                 'msg' : 'Record created successfully'
             }
 
@@ -154,7 +156,9 @@ class RecordsController:
                 import requests
 
                 payload = { 'nric' : 'G123456N' }
-                requests.post('https://host/records/get_diagnosis', data=payload)
+                headers = { 'Content-Type' : 'application/json' }
+
+                requests.post('https://host/records/get_diagnosis', json=payload, headers=headers)
         '''
         if(request.method == 'POST'):
             payload = request.get_json()
@@ -185,8 +189,99 @@ class RecordsController:
                 * 2.2. The correct NRIC is not inside the database : Create a new patient record with the particulars and the correct NRIC and attach
                   the diagnosis result to the correct NRIC.
 
-        '''
+        
+            * Example input data for testing:
+            
+            .. code-block:: python
+                
+                import requests
 
+                payload = { }
+                headers = { 'Content-Type' : 'application/json' }
+                requests.post('https://host/records/update_diagnosis', json=payload, headers=headers)
+
+        '''
+        if(request.method == 'POST'):
+            payload = request.get_json()
+
+            nric = payload['nric'].strip()
+            fname = payload['fname']
+            lname = payload['lname']
+            phone = payload['phone']
+            dob = payload['dob']
+            gender = payload['gender']
+            date_time = payload['datetime']
+            old_nric = payload['old_nric'].strip()
+
+            # If the NRIC is not modified - Nurse did not mistake the NRIC
+            if(nric == old_nric):
+                # Update the basic particulars
+                results = self._entity_patient_record.update_by_key(nric, {
+                    'fname' : fname,
+                    'lname' : lname,
+                    'phone' : phone,
+                    'dob' : dob,
+                    'gender' : gender
+                })
+                if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            else: # Nurse is stupid
+                # If the correct NRIC do not exists
+                results = self._entity_patient_record.list_by_key(nric)
+                if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+                if(len(results['payload']) < 1):
+                    # Insert new patient record with given nric
+                    results = self._entity_patient_record.insert(nric, fname, lname, dob, gender, phone)
+                    if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+                # Modify diagnosis record to correct NRIC
+                results = self._entity_diagnosis.modify_diagnosis_nric(old_nric, nric, date_time)
+                if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+                # Delete old patient record if not associated to any diagnosis
+                results = self._entity_diagnosis.list_by_id(old_nric)
+                if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+                if(len(results['payload']) < 1):
+                    self._entity_patient_record.delete_by_key(old_nric)
+
+            return {
+                '_code' : 'success',
+                'payload' : None,
+                'msg' : 'Record updated successfully'
+            }
+
+    @token_required
+    def delete_diagnosis(self):
+        '''
+            | @Route /records/delete_diagnosis POST
+            | @Access Private
+            | @Desc : Delete a particular diagnosis record given the patient's NRIC and date-time when the diagnosis is created.
+
+            * Example input data for testing
+
+            .. code-block:: python
+
+                import requests
+
+                payload = { 'nric' : 'G12345678N', 'date_time' : '2022-04-15 00:00:00' }
+                headers = { 'Content-Type' : 'application/json' }
+
+                requests.post('https://host/records/delete_diagnosis', json=payload, headers=headers)
+        '''
+        if(request.method == 'POST'):
+            payload = request.get_json()
+            nric = payload['nric']
+            date_time = payload['datetime']
+
+            results = self._entity_diagnosis.delete_by_key_and_datetime(nric, date_time)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            return {
+                '_code' : 'success',
+                'payload' : None,
+                'msg' : 'Record deleted successfully'
+            }
 
     @token_required
     def upload_xray(self):

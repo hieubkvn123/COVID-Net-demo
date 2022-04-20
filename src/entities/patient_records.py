@@ -110,6 +110,33 @@ class PatientRecords:
 
         return results
 
+    def delete_by_key(self, nric):
+        '''
+            | @Route None
+            | @Access Private
+            | @Desc Delete a patient record given the NRIC.
+
+            .. code-block:: python
+
+                from src.entities.patient_records import PatientRecords
+
+                pr_entity = PatientRecords()
+                pr_entity.delete_by_key('G12345678N')
+
+            | is equivalent to the following SQLite3 command:
+
+            .. code-block:: sql
+
+                DELETE FROM PATIENT_RECORD WHERE nric_fin='G12345678N';
+            
+            |
+
+        '''
+        query = f'DELETE FROM PATIENT_RECORD WHERE nric_fin="{nric}"'
+        results = execute_query(query, type="delete")
+
+        return results
+
     def insert(self, nric, fname, lname, dob, gender, phone):
         '''
             | @Route None
