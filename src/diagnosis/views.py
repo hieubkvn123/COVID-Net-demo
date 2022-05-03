@@ -28,14 +28,14 @@ class RecordsView:
         if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
         results = [
             {
-                'patient_nric_fin' : row['patient_nric_fin'],
+                'nric_fin' : row['nric_fin'],
                 'name' : ' '.join((row['fname'], row['lname'])),
                 'date_time' : row['date_time'],
                 'result' : row['result']
             } for row in results['payload']
         ]
 
-        all_nric = [row['patient_nric_fin'] for row in results]
+        all_nric = [row['nric_fin'] for row in results]
 
         return render_template('user-list-records.html', **{'username' : username, 'records' : results, 'all_nric' : all_nric})
 

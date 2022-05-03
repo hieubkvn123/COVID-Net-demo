@@ -52,7 +52,8 @@ class Diagnosis:
             | @Access Private
             | @Desc List all of the diagnosis records from DIAGNOSIS and PATIENT_RECORD. The tables DIAGNOSIS
               and PATIENT_RECORD are linked together by a foreign key "nric_fin". When listed, both information 
-              from the DIAGNOSIS and the PATIENT_RECORD tables will be displayed.
+              from the DIAGNOSIS and the PATIENT_RECORD tables will be displayed even for the patient records
+              without any diagnosis results.
             
             .. code-block:: python
 
@@ -61,15 +62,34 @@ class Diagnosis:
                 dn_entity = Diagnosis()
                 dn_entity.list()
 
-            | is equivalent to the following SQLite3 command:
+            | is equivalent to the following SQLite3 command (Full outer join PATIENT_RECORD and DIAGNOSIS by NRIC/FIN):
 
             .. code-block:: sql
 
-                SELECT * FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin ORDER BY d.date_time;
+                SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                    FROM DIAGNOSIS d 
+                    JOIN PATIENT_RECORD pr 
+                    ON d.patient_nric_fin=pr.nric_fin 
+                    UNION ALL 
+                    SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, "None"
+                    FROM PATIENT_RECORD pr 
+                    LEFT JOIN DIAGNOSIS d 
+                    ON d.patient_nric_fin=pr.nric_fin WHERE d.patient_nric_fin IS NULL 
+                    ORDER BY d.date_time;
 
             |
         '''
-        query = "SELECT * FROM DIAGNOSIS d JOIN PATIENT_RECORD pr ON d.patient_nric_fin=pr.nric_fin ORDER BY d.date_time;"
+        query = """SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                    FROM DIAGNOSIS d 
+                    JOIN PATIENT_RECORD pr 
+                    ON d.patient_nric_fin=pr.nric_fin 
+                    UNION ALL 
+                    SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, "None"
+                    FROM PATIENT_RECORD pr 
+                    LEFT JOIN DIAGNOSIS d 
+                    ON d.patient_nric_fin=pr.nric_fin WHERE d.patient_nric_fin IS NULL 
+                    ORDER BY d.date_time;"""
+
         results = execute_query(query)
 
         return results

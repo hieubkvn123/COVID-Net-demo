@@ -45,11 +45,11 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['patient_nric_fin'] }} visible" id="{{ records[i]['patient_nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
-          <td  class="_border">{{ records[i]['patient_nric_fin'] }}</td>
+        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
+          <td  class="_border">{{ records[i]['nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['date_time'] }}</td>
-          <td  class="_border" style="color: {{ 'red' if records[i]['result'] == 'positive' else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
+          <td  class="_border" style="color: {{ 'red' if(records[i]['result'] == 'positive') else 'gray' if(records[i]['result'] == 'None') else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
         </tr>
       {% endfor %}
     </tbody>

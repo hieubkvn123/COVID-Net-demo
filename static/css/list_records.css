@@ -84,3 +84,7 @@ div.dataTables_wrapper {
 #sortTable_filter input {
   border-radius: 5px;
 }
+
+.rows-disabled {
+  pointer-events: none;
+}

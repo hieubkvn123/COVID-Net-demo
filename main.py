@@ -6,7 +6,7 @@ from utils.tokens import token_required, secret_key
 
 # Include all the routers
 from src.auth import auth_routes
-from src.records import records_routes
+from src.diagnosis import records_routes
 
 app = Flask(__name__)
 app.secret_key = secret_key

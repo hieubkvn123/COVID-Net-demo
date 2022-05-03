@@ -1,6 +1,12 @@
 jQuery(() => {
     table = $('#sortTable').DataTable({
-        'pageLength' : 20
+        'pageLength' : 20,
+        'createdRow' : function( row, data, dataIndex ) {
+            if(data[3] == 'NONE') {
+                $( row ).addClass('row-disabled')
+                console.log("Lol")
+            }
+        }
     });
 
     $("#sortTable_filter input")
@@ -53,4 +59,7 @@ jQuery(() => {
                     toastr.error(err.response.data['msg'])         
             })
     } );
+
+    // Off click event for disabled rows
+    $('#sortTable tbody').on('click', 'tr.row-disabled', function () { return false });
 })
