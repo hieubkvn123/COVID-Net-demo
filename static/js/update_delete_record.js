@@ -11,6 +11,14 @@ jQuery(() => {
         $("#record-update-btn").attr("disabled", false)
     })
 
+    $("#patient-info-modal select").on("change", () => {
+        $("#record-update-btn").attr("disabled", false)
+    })
+
+    $("#patient-info-modal input").on("change", () => {
+        $("#record-update-btn").attr("disabled", false)
+    })
+
     // Event handler for modal on close
     $("#recordModal").on("hidden.bs.modal", function() {
         $("#record-update-btn").attr("disabled", true)
@@ -54,6 +62,9 @@ jQuery(() => {
         let temp = table.row(row_id).data()
         temp[0] = nric 
         temp[1] = new_name
+        temp[2] = phone
+        temp[3] = gender 
+        temp[4] = dob
         $('#sortTable').dataTable().fnUpdate(temp,row_id,undefined,false);
 
         // Modify the rest of the rows with the same NRIC

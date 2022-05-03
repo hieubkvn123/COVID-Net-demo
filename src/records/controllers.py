@@ -3,11 +3,13 @@ import re
 from flask import request 
 from utils.tokens import token_required
 from src.entities.patient_records import PatientRecords
+from src.entities.diagnosis import Diagnosis
 
 class RecordController:
     def __init__(self):
         super(RecordController, self).__init__()
         self._entity_patient_record = PatientRecords()
+        self._entity_diagnosis = Diagnosis()
 
     def validate_input(self, fname, lname, nric, phone):
         '''
@@ -45,9 +47,9 @@ class RecordController:
 
 
     @token_required
-    def create(self):
+    def create_record(self):
         '''
-            | @Route /records/create POST
+            | @Route /records/create_record POST
             | @Access Private
             | @Desc : The controller for creating a record. The create record form data will be received and will be recorded into the 
               SQLite3 database once verified.
@@ -144,4 +146,76 @@ class RecordController:
             return {
                 '_code' : 'success',
                 'payload' : results['payload']
+            }
+
+    @token_required
+    def update_record(self):
+        '''
+            | @Route /records/update_record POST
+            | @Access Private
+            | @Desc : Update a diagnosis records given the following information : nric, fname, lname, phone, gender, dob (PATIENT_RECORD table) and
+              date-time when diagnosis is created (from DIAGNOSIS). The following cases will be included,
+            
+            * 1. NRIC is not modified : When the nurse did not mistake the NRIC of the patient but some of the basic particulars are wrong, the patient
+              record attached to this NRIC will be updated with the new particular.
+            * 2. NRIC is modified : When nurses mistook the NRIC of a patient with another, the following cases will be included
+                * 2.1. The correct NRIC is already in the database : Update the basic particulars if modified and attach the diagnosis result to the 
+                  correct NRIC.
+                * 2.2. The correct NRIC is not inside the database : Create a new patient record with the particulars and the correct NRIC and attach
+                  the diagnosis result to the correct NRIC.
+
+        
+            * Example input data for testing:
+            
+            .. code-block:: python
+                
+                import requests
+
+                payload = { 
+                    'nric' : 'G1778418N',
+                    'fname' : 'Hieu',
+                    'lname' : 'Nong',
+                    'phone' : '88720435',
+                    'dob' : '2000-04-30',
+                    'gender' : 'Male',
+                    'old_nric' : 'G1778418G' # Typo
+                }
+                headers = { 'Content-Type' : 'application/json' }
+                requests.post('https://host/update_record/update_record', json=payload, headers=headers)
+
+        '''
+        if(request.method == 'POST'):
+            payload = request.get_json()
+
+            nric = payload['nric'].strip()
+            fname = payload['fname']
+            lname = payload['lname']
+            phone = payload['phone']
+            dob = payload['dob']
+            gender = payload['gender']
+            old_nric = payload['old_nric'].strip()
+
+            # Check the validity of the input
+            validation_err_msg = self.validate_input(fname, lname, nric, phone)
+            if(validation_err_msg != ""):
+                return {
+                    '_code' : 'failed',
+                    'msg' : validation_err_msg
+                }, 400
+
+
+            # Update the basic particulars
+            results = self._entity_patient_record.update_by_key(nric, {
+                'fname' : fname,
+                'lname' : lname,
+                'phone' : phone,
+                'dob' : dob,
+                'gender' : gender
+            })
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            return {
+                '_code' : 'success',
+                'payload' : None,
+                'msg' : 'Record updated successfully'
             }
