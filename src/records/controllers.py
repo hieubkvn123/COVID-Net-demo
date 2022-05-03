@@ -193,7 +193,6 @@ class RecordController:
             phone = payload['phone']
             dob = payload['dob']
             gender = payload['gender']
-            old_nric = payload['old_nric'].strip()
 
             # Check the validity of the input
             validation_err_msg = self.validate_input(fname, lname, nric, phone)
@@ -218,4 +217,22 @@ class RecordController:
                 '_code' : 'success',
                 'payload' : None,
                 'msg' : 'Record updated successfully'
+            }
+
+    @token_required
+    def delete_record(self):
+        '''
+            | @Route /records/delete_record POST
+            | @Access Private
+            | @Desc : Delete patient's record by their NRIC/FIN.
+        '''
+
+        if(request.method == 'POST'):
+            nric = request.get_json()['nric']
+            results = self._entity_patient_record.delete_by_key(nric)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            return {
+                '_code' : 'success',
+                'msg' : 'Patient record deleted successfully'
             }

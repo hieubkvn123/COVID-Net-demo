@@ -15,10 +15,12 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav mr-auto">
                 <a class="nav-item nav-link {{ 'active' if active_page == 'create_record' }}" href="/records/create">Create Records</a>
-                <a class="nav-item nav-link {{ 'active' if active_page == 'list_record' }}" href="/records/list">View Records</a>
-            
                 <a class="nav-item nav-link {{ 'active' if active_page == 'create_diagnosis' }}" href="/diagnosis/create">Create Diagnosis</a>
+
+                <a class="nav-item nav-link {{ 'active' if active_page == 'list_record' }}" href="/records/list">View Records</a>
                 <a class="nav-item nav-link {{ 'active' if active_page == 'list_diagnosis' }}" href="/diagnosis/list">View Diagnosis</a>
+
+                <!-- Add-on functionalities -->
                 <a class="nav-item nav-link {{ 'active' if active_page == 'search_diagnosis' }}" href="/diagnosis/search">Diagnosis History</a>
             </ul>
         </div>
