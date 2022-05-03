@@ -5,18 +5,13 @@
 
 <!-- Insert stylesheets -->
 {% block stylesheets %}
-<link rel="stylesheet" href="/static/css/list_diagnosis.css"/>
-<link rel="stylesheet" href="/static/css/search_diagnosis.css"/>
+<link rel="stylesheet" href="/static/css/list_records.css"/>
+<link rel="stylesheet" href="/static/css/search_records.css"/>
 {% endblock %}
 
 <!-- Insert javascript -->
 {% block scripts %}
-<script src="/static/js/create_diagnosis.js"></script>
-<script src="/static/js/update_delete_diagnosis.js"></script>
-<script>
-  let all_nric = {{ all_nric | tojson }}
-</script>
-<script src="/static/js/search_diagnosis.js"></script>
+
 {% endblock %}
 
 <!-- Insert main contents -->
@@ -39,8 +34,9 @@
       <tr>
         <th  class="_border">NRIC</th>
         <th  class="_border">Name</th>
-        <th  class="_border">Date-Time Created</th>
-        <th  class="_border">Diagnosis Result</th>
+        <th  class="_border">Contact</th>
+        <th  class="_border">Gender</th>
+        <th  class="_border">Date-of-birth</th>
       </tr>
     </thead>
     <tbody>
@@ -48,8 +44,9 @@
         <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
           <td  class="_border">{{ records[i]['nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
-          <td  class="_border">{{ records[i]['date_time'] }}</td>
-          <td  class="_border" style="color: {{ 'red' if(records[i]['result'] == 'positive') else 'gray' if(records[i]['result'] == 'None') else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
+          <td  class="_border">{{ records[i]['phone'] }}</td>
+          <td  class="_border">{{ records[i]['gender'] }}</td>
+          <td  class="_border">{{ records[i]['dob'] }}</td>
         </tr>
       {% endfor %}
     </tbody>
