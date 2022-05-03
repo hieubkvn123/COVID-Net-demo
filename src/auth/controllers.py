@@ -71,7 +71,7 @@ class AuthController:
 
 	def logout(self):
 		'''
-			| @Route /auth/login GET
+			| @Route /auth/logout GET
 			| @Access Public
 			| @Desc : Once user pressed 'Logout', the system will clear the JWT token and redirect user to login page.
 		'''

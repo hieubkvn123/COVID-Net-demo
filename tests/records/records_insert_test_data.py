@@ -40,12 +40,15 @@ with requests.Session() as s:
     # Insert all diagnosis records
     print('[INFO] Creating diagnosis record ... ')
     for i, _test in enumerate(_TESTS['diagnosis']):
-        files = {'xray' : open(_test['xray'], 'rb')}
-        payload = {'nric' : _test['nric']}
+        try:
+            files = {'xray' : open(_test['xray'], 'rb')}
+            payload = {'nric' : _test['nric']}
 
-        r = s.post(f'{args["url"]}/records/upload_xray', data=payload, files=files)
+            r = s.post(f'{args["url"]}/records/upload_xray', data=payload, files=files)
 
-        if('_code' not in r.json() or r.json()['_code'] != 'success'):
+            if('_code' not in r.json() or r.json()['_code'] != 'success'):
+                print(f'Test case #{i+1} : {fail}Failed{reset}')
+            elif(r.json()['_code'] == 'success'):
+                print(f'Test case #{i+1} : {success}Success{reset}')
+        except:
             print(f'Test case #{i+1} : {fail}Failed{reset}')
-        elif(r.json()['_code'] == 'success'):
-            print(f'Test case #{i+1} : {success}Success{reset}')
