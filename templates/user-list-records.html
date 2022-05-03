@@ -5,28 +5,32 @@
 
 <!-- Insert stylesheets -->
 {% block stylesheets %}
-<link rel="stylesheet" href="/static/css/list_records.css"/>
-<link rel="stylesheet" href="/static/css/search_records.css"/>
+<link rel="stylesheet" href="/static/css/list_diagnosis.css"/>
+<link rel="stylesheet" href="/static/css/search_diagnosis.css"/>
 {% endblock %}
 
 <!-- Insert javascript -->
 {% block scripts %}
-
+<script>
+  let all_nric = {{ all_nric | tojson }}
+</script>
+<script src="/static/js/search_record.js"></script>
+<script src="/static/js/update_delete_record.js"></script>
 {% endblock %}
 
 <!-- Insert main contents -->
 {% block content %}
-{% set active_page = "list_diagnosis" %}
+{% set active_page = "list_record" %}
 {% include 'navbar.html' %}
 {% include 'subnavbar.html' %}
-{% include 'patient-diagnosis-modal.html' %}
+{% include 'patient-record-modal.html' %}
 
 <!-- Main contents -->
 {% include 'user-info-modal.html' %}
 <table class="record-table fadeIn hidden" style="max-height:80vh">
 <!-- Create records form -->
 <td rowspan="2" style="width:45%;vertical-align:top;">
-    <h2 style="font-weight: 900;">Patient Diagnosis Records</h2>
+    <h2 style="font-weight: 900;">Patient Records</h2>
 <br>
 <br>
   <table class="table hover" id="sortTable">
@@ -41,7 +45,7 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
+        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#recordModal">
           <td  class="_border">{{ records[i]['nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['phone'] }}</td>

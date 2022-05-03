@@ -45,7 +45,7 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#exampleModal">
+        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#diagnosisModal">
           <td  class="_border">{{ records[i]['nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['date_time'] }}</td>

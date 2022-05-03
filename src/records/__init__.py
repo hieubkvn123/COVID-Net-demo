@@ -9,7 +9,9 @@ controller = controllers.RecordController()
 view = views.RecordView()
 
 # Register endpoints for all controller functions
-records_routes.add_url_rule('/create_record', 'records_controllers_create', controller.create, methods=['POST'])
+records_routes.add_url_rule('/create_record', 'records_controllers_create_record', controller.create, methods=['POST'])
+records_routes.add_url_rule('/get_record', 'records_controllers_get_record', controller.get_record, methods=['POST'])
 
 # Register endpoints for all view functions
 records_routes.add_url_rule('/create', 'records_views_create', view.create_view, methods=['GET'])
+records_routes.add_url_rule('/list', 'records_views_list', view.list_view, methods=['GET'])

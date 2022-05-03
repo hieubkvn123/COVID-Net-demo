@@ -2,16 +2,22 @@ jQuery(() => {
     
     // Function for closing info modal
     function close_patient_modal() {
-        $("#diagnosisModal").modal("toggle")
+        $("#recordModal").modal("toggle")
+        $("#record-update-btn").attr("disabled", true)
     }
 
     // Event handler for any record field changes in the single record view
-    $("#patient-diagnosis-info-modal input").on("keyup", () => {
-        $("#info-update-btn").attr("disabled", false)
+    $("#patient-info-modal input").on("keyup", () => {
+        $("#record-update-btn").attr("disabled", false)
+    })
+
+    // Event handler for modal on close
+    $("#recordModal").on("hidden.bs.modal", function() {
+        $("#record-update-btn").attr("disabled", true)
     })
 
     // Event handler for clicking update button
-    $("#info-update-btn").on("click", async () => {
+    $("#record-update-btn").on("click", async () => {
         // Get all needed information
         let nric = $("#info-nric").val()
         let fname = $("#info-fname").val()
@@ -28,7 +34,7 @@ jQuery(() => {
         let payload = { nric, old_nric, fname, lname, phone, gender, dob, datetime }
 
         // Submit the information for update to endpoint
-        await axios.post('/diagnosis/update_diagnosis', payload , { 'Content-Type' : 'application/json' })
+        await axios.post('/records/update_record', payload , { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Get server's response and display response message
                 alert(res.data['msg'])
@@ -62,16 +68,14 @@ jQuery(() => {
     })
 
     // Event handler for clicking the delete button
-    $("#info-delete-btn").on("click", async () => {
+    $("#record-delete-btn").on("click", async () => {
         let nric = localStorage.getItem("current_nric")
-        let datetime = $("#info-datetime").val()
-
         let row_id = localStorage.getItem("row_id")
 
-        let payload = { nric, datetime }
+        let payload = { nric }
 
         // Submit the information for delete endpoint
-        await axios.post('/diagnosis/delete_diagnosis', payload, { 'Content-Type' : 'application/json' })
+        await axios.post('/records/delete_record', payload, { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Get server's response and display response message
                 alert(res.data['msg'])

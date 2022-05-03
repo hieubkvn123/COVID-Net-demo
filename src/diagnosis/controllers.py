@@ -81,7 +81,7 @@ class DiagnosisController:
                 payload = { 'nric' : 'G123456N' }
                 headers = { 'Content-Type' : 'application/json' }
 
-                requests.post('https://host/records/get_diagnosis', json=payload, headers=headers)
+                requests.post('https://host/diagnosis/get_diagnosis', json=payload, headers=headers)
         '''
         if(request.method == 'POST'):
             payload = request.get_json()
@@ -121,7 +121,7 @@ class DiagnosisController:
 
                 payload = { }
                 headers = { 'Content-Type' : 'application/json' }
-                requests.post('https://host/records/update_diagnosis', json=payload, headers=headers)
+                requests.post('https://host/diagnosis/update_diagnosis', json=payload, headers=headers)
 
         '''
         if(request.method == 'POST'):
@@ -190,7 +190,7 @@ class DiagnosisController:
                 payload = { 'nric' : 'G12345678N', 'date_time' : '2022-04-15 00:00:00' }
                 headers = { 'Content-Type' : 'application/json' }
 
-                requests.post('https://host/records/delete_diagnosis', json=payload, headers=headers)
+                requests.post('https://host/diagnosis/delete_diagnosis', json=payload, headers=headers)
         '''
         if(request.method == 'POST'):
             payload = request.get_json()
@@ -224,7 +224,7 @@ class DiagnosisController:
                 files = {'xray' : open('path/to/file.png', 'rb')}
                 payload = {'nric' : 'G123456N'}
 
-                requests.post('https://host/records/upload_xray', data=payload, files=files)
+                requests.post('https://host/diagnosis/create_diagnosis', data=payload, files=files)
 
             |
         '''

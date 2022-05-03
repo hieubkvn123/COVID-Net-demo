@@ -1,4 +1,6 @@
 jQuery(() => {
+    $(".fadeIn").fadeIn('slow').removeClass('hidden')
+
     table = $('#sortTable').DataTable({
         'pageLength' : 20,
         'createdRow' : function( row, data, dataIndex ) {
@@ -27,7 +29,7 @@ jQuery(() => {
         $("#info-update-btn").attr("disabled", true)
 
         // Make the modal dialog appear with information corresponding to the NRIC
-        axios.post('/diagnosis/get_diagnosis', { nric, datetime }, { 'Content-Type' : 'application/json' })
+        axios.post('/records/get_record', { nric, datetime }, { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Retrieve the payload from server
                 let payload = res.data['payload'][0]
@@ -39,19 +41,13 @@ jQuery(() => {
                 $("#info-phone").val(payload.phone)
                 $("#info-gender").val(payload.gender)
                 $("#info-dob").val(payload.dob)
-                $("#info-datetime").val(payload.date_time)
-                $("#info-result").val(payload.result).css("color", payload.result === "negative" ? "green" : "red")
-                $("#info-confidence").val(payload.confidence).css("color", payload.result === "negative" ? "green" : "red")
-
-                // Change image source
-                $("#patient-info-xray-img").attr("src", payload.xray_img_url)
 
                 // Store in local storage
                 localStorage.setItem("current_nric", payload.nric_fin)
                 localStorage.setItem("row_id", row_id)
 
                 // Change modal dialog title
-                $("#patient-diagnosis-info-modal-title").html(`Diagnosis no. ${payload.nric_fin} - ${payload.date_time}`)
+                $("#patient-info-modal-title").html(`Patient no. ${payload.nric_fin}`)
             })
             .catch(err => {
                 if(err.response) 

@@ -8,12 +8,20 @@
   float:right
 }
 
+#patient-diagnosis-info-modal label {
+  font-weight: bolder;
+}
+
 #patient-info-modal label {
   font-weight: bolder;
 }
 
-#patient-info-modal input {
+#patient-diagnosis-info-modal input {
   margin-bottom : 3px
+}
+
+#patient-info-modal input {
+  margin-bottom : 3px;
 }
 
 #patient-info-xray-img {

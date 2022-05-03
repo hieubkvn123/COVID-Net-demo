@@ -113,3 +113,35 @@ class RecordController:
                 'payload' : None,
                 'msg' : 'Record created successfully'
             }
+
+    @token_required
+    def get_record(self):
+        '''
+            | @Route /records/get_record
+            | @Access Private
+            | @Desc : Get information of a patient record given a particular patient's NRIC/FIN.
+            
+            * Example input data for testing:
+
+            .. code-block:: python
+
+                import requests
+
+                payload = {
+                    'nric' : 'G1234567N'
+                }
+
+                headers = { 'Content-Type' : 'application/json' }
+                requests.post('https://host/records/get_record', json=payload, headers=headers)
+        '''
+        if(request.method == 'POST'):
+            nric = request.get_json()['nric']
+
+            # Get the record given the NRIC
+            results = self._entity_patient_record.list_by_key(nric)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            return {
+                '_code' : 'success',
+                'payload' : results['payload']
+            }
