@@ -1,0 +1,79 @@
+<!-- Prototype page for main user page -->
+{% extends 'base.html' %}
+
+{% block title %} Welcome back {{ username }} {% endblock %}
+
+<!-- Insert stylesheets -->
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/create_diagnosis.css"/>
+{% endblock %}
+
+<!-- Insert javascript -->
+{% block scripts %}
+<script src="/static/js/create_diagnosis.js"></script>
+{% endblock %}
+
+<!-- Insert main contents -->
+{% block content %}
+{% set active_page = "create_diagnosis" %}
+{% include 'navbar.html' %}
+{% include 'subnavbar.html' %}
+
+<!-- Main contents -->
+<table class="record-table fadeIn hidden">
+    <thead>
+      <tr>
+        <!-- Create diagnosis form -->
+        <td rowspan="2" style="width:45%;vertical-align: top;">
+            <h2 style="font-weight: 900;">Create Diagnosis</h2>
+            <form id="create-diagnosis-form">
+                <!-- NRIC/FIN -->
+                <label for="nric">NRIC/FIN</label>
+                <input type="text" class="form-control" name="nric" id="nric" placeholder="Identification Number"/>
+
+                <!-- Buttons Submit/Reset -->
+                <div class="container" style="width:100%; margin-top:20px">
+                    <div class="row">
+                      <div class="col-sm">
+                        <button style="width: 100%;" type="button" class="btn btn-primary" id="create_diagnosis_btn">Create Diagnosis</button>
+                      </div>
+                      <div class="col-sm">
+                        <button style="width: 100%;" type="reset" class="btn btn-primary">Reset Form</button>
+                      </div>
+                    </div>
+                  </div>
+                
+            </form>
+        </td>
+
+        <!-- Image Uploader -->
+        <td>
+            <div class="container col-md-8">
+                <div class="mb-5 custom-file">
+                    <div class="custom-file" style="display:block">
+                        <input type="file" class="custom-file-input" id="xray-file" onchange="preview()">
+                        <label class="custom-file-label" for="validatedCustomFile">Choose XRay Image...</label>
+                        <button onclick="clearImage()" class="btn btn-primary mt-3">Clear Image</button>
+                    </div>
+                </div>
+                <div style="width:100%;text-align: center;margin-top: 20px;height:50%">
+                    <img id="frame" src="/static/media/xray_placeholder.png" class="img-fluid"/>
+                </div>
+            </div>
+        </td>
+      </tr>
+
+      <!-- Diagnosis result -->
+      <tr style="width:50%">
+        <td>
+            <div class="container col-md-8 col-mt">
+                <div class="mt-2">
+                    <strong>Positive/Negative : </strong> <span id="diagnosis-result"></span><br>
+                    <strong>Probability/Certainty : </strong> <span id="confidence"></span>
+                </div>
+            </div>
+        </td>
+      </tr>
+    </thead>
+</table>
+{% endblock %}

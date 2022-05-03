@@ -23,6 +23,15 @@
     font-weight: bolder;
 }
 
+#create-diagnosis-form {
+  margin-top:30px;
+}
+
+#create-diagnosis-form label {
+  margin-top : 10px;
+  font-weight: bolder;
+}
+
 #frame {
     height : 480px;
     width : auto;

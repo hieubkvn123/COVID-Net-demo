@@ -55,6 +55,22 @@ class DiagnosisView:
 
         return render_template('user-search-diagnosis.html', **{'username' : username})
 
+    @token_required
+    def create_view(self):
+        '''
+            | @Route /diagnosis/create GET
+            | @Access Private
+            | @Desc : Display the create diagnosis for existing patient using their NRIC and X-Ray images.
+
+            |
+        '''
+
+        token = request.cookies.get('access_token')
+        username = username_from_token(token) 
+
+        return render_template('user-create-diagnosis.html', **{'username' : username})
+        
+
     # @token_required
     # def update_view(self):
     #     token = request.cookies.get('access_token')
