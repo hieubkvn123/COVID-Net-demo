@@ -29,3 +29,5 @@ IMG_UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 COMPUTING_SERVER_IP = '103.140.38.46'
 COMPUTING_SERVER_PORT = '8889'
+DEFAULT_ROUTE_AUTHENTICATED = 'records.records_views_create'
+DEFAULT_ROUTE_GUESS = 'authentication.auth_views_login'

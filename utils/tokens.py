@@ -1,7 +1,7 @@
 import jwt
 from flask import jsonify, request, flash, redirect, url_for, make_response
 from functools import wraps
-from config import SECRET_KEY, TOKEN_TIMEOUT
+from config import SECRET_KEY, TOKEN_TIMEOUT, DEFAULT_ROUTE_GUESS
 
 secret_key = SECRET_KEY
 timeout_mins = TOKEN_TIMEOUT # Expires after 1 hour
@@ -27,7 +27,7 @@ def token_required(f):
 			data = jwt.decode(token, secret_key)
 		except jwt.ExpiredSignatureError:
 			flash("Session expired", "info")
-			response = make_response(redirect(url_for('login_page')))
+			response = make_response(redirect(url_for(DEFAULT_ROUTE_GUESS)))
 			response.delete_cookie('access_token')
 
 			return response

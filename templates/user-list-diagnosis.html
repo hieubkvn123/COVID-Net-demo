@@ -21,17 +21,17 @@
 
 <!-- Insert main contents -->
 {% block content %}
-{% set active_page = "list_record" %}
+{% set active_page = "list_diagnosis" %}
 {% include 'navbar.html' %}
 {% include 'subnavbar.html' %}
-{% include 'patient-info-modal.html' %}
+{% include 'patient-diagnosis-modal.html' %}
 
 <!-- Main contents -->
 {% include 'user-info-modal.html' %}
 <table class="record-table fadeIn hidden" style="max-height:80vh">
 <!-- Create records form -->
 <td rowspan="2" style="width:45%;vertical-align:top;">
-    <h2 style="font-weight: 900;">Patient Records</h2>
+    <h2 style="font-weight: 900;">Patient Diagnosis Records</h2>
 <br>
 <br>
   <table class="table hover" id="sortTable">

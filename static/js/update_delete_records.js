@@ -28,7 +28,7 @@ jQuery(() => {
         let payload = { nric, old_nric, fname, lname, phone, gender, dob, datetime }
 
         // Submit the information for update to endpoint
-        await axios.post('/records/update_diagnosis', payload , { 'Content-Type' : 'application/json' })
+        await axios.post('/diagnosis/update_diagnosis', payload , { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Get server's response and display response message
                 alert(res.data['msg'])
@@ -71,7 +71,7 @@ jQuery(() => {
         let payload = { nric, datetime }
 
         // Submit the information for delete endpoint
-        await axios.post('/records/delete_diagnosis', payload, { 'Content-Type' : 'application/json' })
+        await axios.post('/diagnosis/delete_diagnosis', payload, { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Get server's response and display response message
                 alert(res.data['msg'])

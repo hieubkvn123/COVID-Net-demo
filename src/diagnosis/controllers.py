@@ -13,9 +13,9 @@ from config import IMG_UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 from config import COMPUTING_SERVER_IP, COMPUTING_SERVER_PORT
 
 
-class RecordsController:
+class DiagnosisController:
     def __init__(self):
-        super(RecordsController, self).__init__()
+        super(DiagnosisController, self).__init__()
         self._entity_patient_record = PatientRecords()
         self._entity_diagnosis = Diagnosis()
 
@@ -64,87 +64,10 @@ class RecordsController:
 
         return err_msg
 
-
-    @token_required
-    def create(self):
-        '''
-            | @Route /records/create POST
-            | @Access Private
-            | @Desc : The controller for creating a record. The create record form data will be received and will be recorded into the 
-              SQLite3 database once verified.
-            
-            * Example input data for testing:
-
-            .. code-block:: python
-
-                import requests
-
-                payload = {
-                    'fname' : 'John',
-                    'lname' : 'Doe',
-                    'nric' : 'G1234567N',
-                    'gender' : 'Male',
-                    'dob' : '1998-01-01',
-                    'phone' : '12345678'
-                }
-
-                headers = { 'Content-Type' : 'application/json' }
-                requests.post('https://host/records/create', json=payload, headers=headers)
-                
-            |  
-        '''
-
-        if(request.method == 'POST'):
-            # Retrieve data from the payload
-            payload = request.get_json()
-            fname = payload['fname']
-            lname = payload['lname']
-            nric = payload['nric']
-            gender = payload['gender']
-            dob = payload['dob']
-            phone = payload['phone']
-
-            # Check the validity of the input
-            validation_err_msg = self.validate_input(fname, lname, nric, phone)
-            if(validation_err_msg != ""):
-                return {
-                    '_code' : 'failed',
-                    'msg' : validation_err_msg
-                }, 400
-
-            # Check if record already exists
-            results = self._entity_patient_record.list_by_key(nric)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
-
-            # If the record exists
-            if(isinstance(results['payload'], list)):
-                if(len(results['payload']) > 0):
-                    # Update all particulars
-                    results = self._entity_patient_record.update_by_key(nric, {
-                        'fname' : fname, 'lname' : lname, 'gender' : gender, 'dob' : dob, 'phone' : phone
-                    })
-
-                    if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
-
-                    return {
-                        '_code' : 'success',
-                        'msg' : "Patient's NRIC already exists, Updating diagnosis result and X-Ray ... "
-                    }
-
-            # If not exist, Record to the database
-            results = self._entity_patient_record.insert(nric, fname, lname, dob, gender, phone)
-            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
-
-            return {
-                '_code' : 'success',
-                'payload' : None,
-                'msg' : 'Record created successfully'
-            }
-
     @token_required
     def get_diagnosis(self):
         '''
-            | @Route /records/get_diagnosis POST
+            | @Route /diagnosis/get_diagnosis POST
             | @Access Private
             | @Desc : Get a diagnosis detail with patient's information (nric, name, ...) and diagnosis details (X-ray image, date-time diagnosed, ...)
               given the patient's NRIC and the date-time when the diagnosis is created.
@@ -176,7 +99,7 @@ class RecordsController:
     @token_required
     def update_diagnosis(self):
         '''
-            | @Route /records/update_diagnosis POST
+            | @Route /diagnosis/update_diagnosis POST
             | @Access Private
             | @Desc : Update a diagnosis records given the following information : nric, fname, lname, phone, gender, dob (PATIENT_RECORD table) and
               date-time when diagnosis is created (from DIAGNOSIS). The following cases will be included,
@@ -254,7 +177,7 @@ class RecordsController:
     @token_required
     def delete_diagnosis(self):
         '''
-            | @Route /records/delete_diagnosis POST
+            | @Route /diagnosis/delete_diagnosis POST
             | @Access Private
             | @Desc : Delete a particular diagnosis record given the patient's NRIC and date-time when the diagnosis is created.
 
@@ -284,9 +207,9 @@ class RecordsController:
             }
 
     @token_required
-    def upload_xray(self):
+    def create_diagnosis(self):
         '''
-            | @Route /records/upload_xray POST
+            | @Route /diagnosis/create_diagnosis POST
             | @Access Private
             | @Desc : This function runs in parallel with `records.controllers.create()`. After the patient record is recorded
               into the SQLite3 database, the uploaded x-ray image and the patient's NRIC will be forwarded to the computing server 

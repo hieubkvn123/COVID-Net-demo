@@ -29,7 +29,7 @@ jQuery(() => {
             const data = { fname, lname, nric, gender, dob, phone }
 
             // Send the data to the API 
-            axios.post('/records/create', data, {'Content-Type' : 'application/json'})
+            axios.post('/records/create_record', data, {'Content-Type' : 'application/json'})
                 .then(response => {
                     console.log('Records created successfully ... ')
                     alert(response.data['msg'])
@@ -41,7 +41,8 @@ jQuery(() => {
                         formData.append("xray", file.files[0])
                         formData.append("nric", nric)
                         
-                        axios.post("/records/upload_xray", formData, {'Content-Type' : 'multipart/form-data'})
+                        // If the image is provided, create the diagnosis 
+                        axios.post("/diagnosis/create_diagnosis", formData, {'Content-Type' : 'multipart/form-data'})
                             .then(response => {
                                 console.log(response.data['msg'])
                                 let diagnosis_result = response.data['payload']['result']

@@ -4,7 +4,6 @@ jQuery(() => {
         'createdRow' : function( row, data, dataIndex ) {
             if(data[3] == 'NONE') {
                 $( row ).addClass('row-disabled')
-                console.log("Lol")
             }
         }
     });
@@ -28,7 +27,7 @@ jQuery(() => {
         $("#info-update-btn").attr("disabled", true)
 
         // Make the modal dialog appear with information corresponding to the NRIC
-        axios.post('/records/get_diagnosis', { nric, datetime }, { 'Content-Type' : 'application/json' })
+        axios.post('/diagnosis/get_diagnosis', { nric, datetime }, { 'Content-Type' : 'application/json' })
             .then(res => {
                 // Retrieve the payload from server
                 let payload = res.data['payload'][0]

@@ -12,26 +12,27 @@
           <div id="patient-info-modal">
             <form id='patient-info-form'>
               <label for="info-nric">NRIC</label>
-              <input class='form-control' id="info-nric" name="info-nric" type="text"/>
+              <input class='form-control' id="info-nric" name="info-nric" type="text" disabled/>
 
               <label for="info-fname">First Name</label>
-              <input class="form-control" id="info-fname" name="info-fname" type="text"/>
+              <input class="form-control" id="info-fname" name="info-fname" type="text" disabled/>
 
               <label for="info-lname">Last Name</label>
-              <input class="form-control" id="info-lname" name="info-lname" type="text"/>
+              <input class="form-control" id="info-lname" name="info-lname" type="text" disabled/>
 
               <label for="info-phone">Phone</label>
-              <input class="form-control" id="info-phone" name="info-phone" type="text"/>
+              <input class="form-control" id="info-phone" name="info-phone" type="text" disabled/>
 
               <label for="info-gender">Gender</label>
-              <select id="info-gender" name="info-gender" class="form-control">
+              <select id="info-gender" name="info-gender" class="form-control" disabled>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
               </select>
 
               <label for="info-dob">Date of Birth</label>
-              <input type="date" class="form-control" name="info-dob" id="info-dob"/>
+              <input type="date" class="form-control" name="info-dob" id="info-dob" disabled/>
 
+              <hr>
               <label for="info-datetime">Diagnosed date-time</label>
               <input type="datetime" class="form-control" name="info-datetime" id="info-datetime" disabled/>
 
@@ -50,8 +51,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button id="info-delete-btn" type="button" class="btn btn-danger">Delete Record</button>
-          <button id="info-update-btn" type="button" class="btn btn-primary">Update Record</button>
+          <button id="info-delete-btn" type="button" class="btn btn-danger">Delete Diagnosis</button>
+          <!-- <button id="info-update-btn" type="button" class="btn btn-primary">Update Record</button> -->
         </div>
       </div>
     </div>

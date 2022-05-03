@@ -4,6 +4,7 @@ import datetime
 
 from flask import current_app
 from flask import request, flash, redirect, url_for, make_response
+from config import DEFAULT_ROUTE_AUTHENTICATED, DEFAULT_ROUTE_GUESS
 from utils.tokens import timeout_mins
 
 from src.entities.account import Account
@@ -62,7 +63,7 @@ class AuthController:
 						key=current_app.secret_key)
 
 					# Create a response and set access token as a cookie
-					response = make_response(redirect(url_for('user_main_page')))
+					response = make_response(redirect(url_for(DEFAULT_ROUTE_AUTHENTICATED)))
 					response.set_cookie('access_token', token)
 					return response
 
@@ -75,7 +76,7 @@ class AuthController:
 			| @Access Public
 			| @Desc : Once user pressed 'Logout', the system will clear the JWT token and redirect user to login page.
 		'''
-		response = make_response(redirect(url_for('login_page')))
+		response = make_response(redirect(url_for(DEFAULT_ROUTE_GUESS)))
 		response.delete_cookie('access_token')
 
 		return response
