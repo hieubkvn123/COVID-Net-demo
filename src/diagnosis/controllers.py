@@ -199,3 +199,42 @@ class DiagnosisController:
                 }
             }
 
+    @token_required
+    def search_diagnosis(self):
+        '''
+            | @Route /diagnosis/search_diagnosis POST
+            | @Access Private
+            | @Desc : Used to search diagnosis records based on several attributes like nric/fin, first name, last name, ...
+
+            * Example input data for testing:
+            
+            .. code-block:: python
+
+                import requests
+
+                headers = { 'Content-Type' : 'application/json' }
+                payload = {'nric' : 'G123456N'}
+
+                requests.post('https://host/diagnosis/search_diagnosis', json=payload, headers=headers)
+
+            |
+        '''
+
+        if(request.method == 'POST'):
+            payload = request.get_json()
+            nric = payload['nric'] if 'nric' in payload else ""
+            fname = payload['fname'] if 'fname' in payload else ""
+            lname = payload['lname'] if 'lname' in payload else ""
+            date = payload['date'] if 'date' in payload else ""
+            result = payload['result'] if 'result' in payload else ""
+
+            print(payload)
+
+            results = self._entity_diagnosis.search(nric, fname, lname, date, result)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            return {
+                '_code' : 'success',
+                'payload' : results['payload']
+            }
+

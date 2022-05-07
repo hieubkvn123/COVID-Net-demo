@@ -1,3 +1,4 @@
+from datetime import datetime
 from utils.db import execute_query
 
 class Diagnosis:
@@ -174,5 +175,59 @@ class Diagnosis:
 
         query = f'DELETE FROM DIAGNOSIS WHERE patient_nric_fin="{nric}" AND date_time="{date_time}"'
         results = execute_query(query, type="delete")
+
+        return results
+
+    def search(self, nric, fname, lname, date, result):
+        '''
+            | @Route None
+            | @Access Private
+            | @Desc Search diagnosis records based on nric, first name, last name, date when diagnosed and diagnosis result.
+
+            .. code-block:: python
+                
+                from src.entities.diagnosis import Diagnosis
+
+                dn_entity = Diagnosis()
+                dn_entity.search('G12345678N', 'Nong', 'Hieu', '2022-04-15', 'positive')
+
+            | is equivalent to the following SQLite3 command:
+
+            .. code-block:: sql
+
+                SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                    FROM DIAGNOSIS d 
+                    JOIN PATIENT_RECORD pr 
+                    ON d.patient_nric_fin=pr.nric_fin 
+                    WHERE pr.nric_fin LIKE '%G12345678N%' 
+                    AND pr.fname LIKE '%Nong%'
+                    AND pr.lname LIKE '%Hieu%'
+                    AND TO_DATE(d.date_time) = '2022-04-15'
+                    AND d.result = 'positive';
+            |
+
+        '''
+        query_format = '''SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                    FROM DIAGNOSIS d 
+                    JOIN PATIENT_RECORD pr 
+                    ON d.patient_nric_fin=pr.nric_fin 
+                    WHERE pr.nric_fin LIKE '%{}%' 
+                    AND pr.fname LIKE '%{}%'
+                    AND pr.lname LIKE '%{}%'
+                    AND d.result LIKE '%{}%';
+        '''
+
+        result = "" if result.lower() != "positive" or result.lower() != "positive" else result
+        query = query_format.format(nric, fname, lname, result)
+        results = execute_query(query)
+
+        # If the query passed, filter the datetime
+        if(date != "" or date is not None):
+            try:
+                date = datetime.strptime(date, "%Y-%m-%d")
+                results['payload'] = filter(lambda x : datetime.strptime(x['date_time'], "%Y-%m-%d %H:%M:%S") > date, results['payload'])
+                results['payload'] = list(results['payload'])
+            except:
+                print('[INFO] No date-time provided or date-time invalid')
 
         return results

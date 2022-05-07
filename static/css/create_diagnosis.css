@@ -14,13 +14,18 @@
     padding : 20px;
 }
 
-#create-record-form {
+#create-record-form, #search-record-form {
     margin-top:30px;
 }
 
 #create-record-form label {
     margin-top : 10px;
     font-weight: bolder;
+}
+
+#search-record-form label {
+  margin-top : 10px;
+  font-weight: bolder;
 }
 
 #create-diagnosis-form {
