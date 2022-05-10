@@ -228,7 +228,6 @@ class DiagnosisController:
             date = payload['date'] if 'date' in payload else ""
             result = payload['result'] if 'result' in payload else ""
 
-            print(payload)
 
             results = self._entity_diagnosis.search(nric, fname, lname, date, result)
             if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
