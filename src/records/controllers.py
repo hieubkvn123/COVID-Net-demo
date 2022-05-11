@@ -18,8 +18,8 @@ class RecordController:
             | @Desc : Check the validity of user input for the create record endpoint. The following criterias will be applied on each
               input fields.
 
-            * fname : Contains only letters (uppercase and lowercase).
-            * lname : Contains only letters (uppercase and lowercase).
+            * fname : Contains only letters (uppercase and lowercase) and some spacing.
+            * lname : Contains only letters (uppercase and lowercase) and some spacing.
             * nric : One uppercase letter followed by 7 digits then another uppercase letter.
             * phone : Contains only digits.
 
@@ -28,7 +28,7 @@ class RecordController:
         '''
         err_msg = ""
         nric_pattern = "^([A-Z]{1}[0-9]{7}[A-Z]{1})$"
-        name_pattern = "^[a-zA-Z]+$"
+        name_pattern = "^[a-zA-Z ]+$"
         phon_pattern = "^[0-9]+$"
 
         if(not re.match(nric_pattern, nric)):
@@ -36,7 +36,7 @@ class RecordController:
 
         if(not re.match(name_pattern, fname) or not re.match(name_pattern, lname)):
             if(err_msg != "") : err_msg += ", "
-            err_msg += "Name must include only letter from a-z or A-Z"
+            err_msg += "Name must include only letter from a-z or A-Z with spacing"
         
 
         if(not re.match(phon_pattern, phone)):

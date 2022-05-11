@@ -1,9 +1,8 @@
-from lib2to3.pgen2 import token
 import os
 import re
 import datetime
 import requests
-from flask import request
+from flask import request, url_for, redirect
 from werkzeug.utils import secure_filename
 from src.entities.patient_records import PatientRecords
 from src.entities.diagnosis import Diagnosis
@@ -30,6 +29,21 @@ class DiagnosisController:
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+    def validate_nric(self, nric):
+        '''
+            | @Route None
+            | @Access None
+            | @Desc : Check the validity of the NRIC's format.
+        '''
+        nric_pattern = "^([A-Z]{1}[0-9]{7}[A-Z]{1})$"
+        err_msg = ""
+
+        if(not re.match(nric_pattern, nric)):
+            err_msg += "NRIC must include an upper-case letter followed by 7 digits and another upper-case letter"
+
+        return err_msg
+
+
     def validate_input(self, fname, lname, nric, phone):
         '''
             | @Route None
@@ -37,8 +51,8 @@ class DiagnosisController:
             | @Desc : Check the validity of user input for the create record endpoint. The following criterias will be applied on each
               input fields.
 
-            * fname : Contains only letters (uppercase and lowercase).
-            * lname : Contains only letters (uppercase and lowercase).
+            * fname : Contains only letters (uppercase and lowercase) and some spacing.
+            * lname : Contains only letters (uppercase and lowercase) and some spacing.
             * nric : One uppercase letter followed by 7 digits then another uppercase letter.
             * phone : Contains only digits.
 
@@ -47,7 +61,7 @@ class DiagnosisController:
         '''
         err_msg = ""
         nric_pattern = "^([A-Z]{1}[0-9]{7}[A-Z]{1})$"
-        name_pattern = "^[a-zA-Z]+$"
+        name_pattern = "^[a-zA-Z ]+$"
         phon_pattern = "^[0-9]+$"
 
         if(not re.match(nric_pattern, nric)):
@@ -55,7 +69,7 @@ class DiagnosisController:
 
         if(not re.match(name_pattern, fname) or not re.match(name_pattern, lname)):
             if(err_msg != "") : err_msg += ", "
-            err_msg += "Name must include only letter from a-z or A-Z"
+            err_msg += "Name must include only letter from a-z or A-Z with spacing"
         
 
         if(not re.match(phon_pattern, phone)):
@@ -198,6 +212,54 @@ class DiagnosisController:
                     'confidence' : f'{confidence*100:.2f}%'
                 }
             }
+
+    @token_required
+    def create_existing_diagnosis(self):
+        '''
+            | @Route /diagnosis/create_existing_diagnosis POST
+            | @Access Private
+            | @Desc : This function is used to create diagnosis records for patients whose information already 
+              exists in the system's database. If the NRIC's from the request's body does not exists, this function
+              returns an error.
+
+            * Example input data for testing:
+
+            .. code-block:: python
+                
+                import requests
+
+                files = {'xray' : open('path/to/file.png', 'rb')}
+                payload = {'nric' : 'G123456N'}
+
+                requests.post('https://host/diagnosis/create_existing_diagnosis', data=payload, files=files)
+        '''
+
+        if(request.method == 'POST'):
+            # Get the NRIC from request body
+            nric = request.form['nric']
+
+            # Verify if the NRIC format is correct
+            err_msg = self.validate_nric(nric)
+            if(err_msg != ""):
+                return {
+                    '_code' : 'failed',
+                    'msg' : err_msg
+                }, 400
+
+            # Verify if the NRIC exists in the database
+            results = self._entity_patient_record.list_by_key(nric)
+            if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+            # If the record exists
+            if(isinstance(results['payload'], list)):
+                if(len(results['payload']) > 0):
+                    return redirect(url_for('diagnosis.records_controllers_create_diagnosis'), code=307)
+                else: # If the record does not exists
+                    return {
+                        '_code' : 'failed', 
+                        'msg' : f'The patient record corresponding to {nric} does not exist'
+                    }, 400
+
 
     @token_required
     def search_diagnosis(self):

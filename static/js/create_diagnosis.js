@@ -12,7 +12,43 @@ jQuery(() => {
     // For fade-in form animation
     $(".fadeIn").fadeIn('slow').removeClass('hidden')
 
-    // For the upload of records
+    // For creating diagnosis for existing patients
+    $("#create_existing_diagnosis_btn").on("click", () => {
+        let nric = $("#create-diagnosis-form #nric").val()
+        let file = document.querySelector("#xray-file")
+        if(file.files.length > 0) { // Image exists 
+            let formData = new FormData()
+            formData.append("xray", file.files[0])
+            formData.append("nric", nric)
+
+            // Send request to create diagnosis
+            axios.post("/diagnosis/create_existing_diagnosis", formData, {'Content-Type' : 'multipart/form-data'})
+            .then(response => {
+                let diagnosis_result = response.data['payload']['result']
+                let diagnosis_confidence = response.data['payload']['confidence']
+
+                if(diagnosis_result === "negative")
+                    $("#diagnosis-result").html(diagnosis_result).css("color", "green")
+                else 
+                    $("#diagnosis-result").html(diagnosis_result).css("color", "red")
+                    
+                $("#confidence").html(diagnosis_confidence)
+
+                toastr.success(response.data['msg'])
+            })
+            .catch(err => {
+                if(err.response)
+                    toastr.error(err.response.data['msg'])
+            })
+        } else {
+            alert("Please upload the patient's X-Ray image")
+        }
+    })
+
+
+
+
+    // For the upload of records AND diagnosis
     $("#create_record_btn").on("click", () => {
         // Get all form information
         let fname = $("#create-record-form #fname").val()
@@ -44,7 +80,6 @@ jQuery(() => {
                         // If the image is provided, create the diagnosis 
                         axios.post("/diagnosis/create_diagnosis", formData, {'Content-Type' : 'multipart/form-data'})
                             .then(response => {
-                                console.log(response.data['msg'])
                                 let diagnosis_result = response.data['payload']['result']
                                 let diagnosis_confidence = response.data['payload']['confidence']
 
