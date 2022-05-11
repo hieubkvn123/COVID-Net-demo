@@ -32,8 +32,13 @@ def token_required(f):
 
 			return response
 		except:
-			return jsonify({'msg' : 'Token is invalid'}), 401
-		
+			# return jsonify({'msg' : 'Token is invalid'}), 401
+			flash("Token is invalid", "danger")
+			response = make_response(redirect(url_for(DEFAULT_ROUTE_GUESS)))
+			response.delete_cookie('access_token')
+
+			return response
+
 		return f(*args, **kwargs)
 
 	return decorated
