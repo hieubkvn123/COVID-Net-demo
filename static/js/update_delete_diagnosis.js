@@ -1,10 +1,4 @@
 jQuery(() => {
-    
-    // Function for closing info modal
-    function close_patient_modal() {
-        $("#diagnosisModal").modal("toggle")
-    }
-
     // Event handler for any record field changes in the single record view
     $("#patient-diagnosis-info-modal input").on("keyup", () => {
         $("#info-update-btn").attr("disabled", false)

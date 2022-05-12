@@ -7,7 +7,7 @@ jQuery(() => {
 
     // Make diagnosis history table a DataTable
     table_diagnosis_history = $('#diagnosis-history-table').DataTable({
-        'pageLength' : 20
+        'pageLength' : 10
     });
 
     $("#search_diagnosis_btn").on("click", () => {

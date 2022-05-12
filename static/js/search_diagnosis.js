@@ -1,6 +1,6 @@
 jQuery(() => {
     table = $('#sortTable').DataTable({
-        'pageLength' : 20,
+        'pageLength' : 10,
         'createdRow' : function( row, data, dataIndex ) {
             if(data[3] == 'NONE') {
                 $( row ).addClass('row-disabled')
