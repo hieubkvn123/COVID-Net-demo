@@ -34,7 +34,7 @@ jQuery(() => {
                 alert(res.data['msg'])
 
                 // Close modal
-                close_patient_modal()
+                $("#diagnosisModal").modal("toggle")
             })
             .catch(err => {
                 if(err.response)
@@ -77,7 +77,7 @@ jQuery(() => {
                 alert(res.data['msg'])
 
                 // Close modal
-                close_patient_modal()
+                $("#diagnosisModal").modal("toggle")
             })
             .catch(err => {
                 if(err.response)

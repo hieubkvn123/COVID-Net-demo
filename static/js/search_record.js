@@ -48,6 +48,9 @@ jQuery(() => {
 
                 // Change modal dialog title
                 $("#patient-info-modal-title").html(`Patient no. ${payload.nric_fin}`)
+
+                // Show the modal
+                $("#recordModal").modal("toggle")
             })
             .catch(err => {
                 if(err.response) 

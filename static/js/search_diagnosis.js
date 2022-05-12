@@ -52,6 +52,9 @@ jQuery(() => {
 
                 // Change modal dialog title
                 $("#patient-diagnosis-info-modal-title").html(`Diagnosis no. ${payload.nric_fin} - ${payload.date_time}`)
+
+                // Show the modal
+                $("#diagnosisModal").modal("toggle")
             })
             .catch(err => {
                 if(err.response) 

@@ -20,13 +20,12 @@
 
 <!-- Insert main contents -->
 {% set active_page = "list_record" %}
-{% include 'subnavbar-draft.html' %}
+{% include 'subnavbar.html' %}
 
 {% block content %}
 {% include 'patient-record-modal.html' %}
 
 <!-- Main contents -->
-{% include 'user-info-modal.html' %}
 <div class="record-view fadeIn hidden">
   <h2>Patient Records</h2>
   <table class="table hover" id="sortTable">
@@ -41,7 +40,7 @@
     </thead>
     <tbody>
       {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#recordModal">
+        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}">
           <td  class="_border">{{ records[i]['nric_fin'] }}</td>
           <td  class="_border">{{ records[i]['name'] }}</td>
           <td  class="_border">{{ records[i]['phone'] }}</td>

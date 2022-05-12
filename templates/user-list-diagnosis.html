@@ -21,7 +21,7 @@
 
 <!-- Insert main contents -->
 {% set active_page = "list_diagnosis" %}
-{% include 'subnavbar-draft.html' %}
+{% include 'subnavbar.html' %}
 
 {% block content %}
 {% include 'patient-diagnosis-modal.html' %}
@@ -39,7 +39,7 @@
   </thead>
   <tbody>
     {% for i in range(records|length) %}
-      <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#diagnosisModal">
+      <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}">
         <td  class="_border">{{ records[i]['nric_fin'] }}</td>
         <td  class="_border">{{ records[i]['name'] }}</td>
         <td  class="_border">{{ records[i]['date_time'] }}</td>
