@@ -1,0 +1,29 @@
+.result-item span.result.NONE {
+    color : gray;
+    font-weight: bolder;
+}
+
+.result-item span.confidence.NONE {
+    color : gray;
+    font-weight: bolder;
+}
+
+.result-item span.result.negative {
+    color : rgb(64, 155, 64);
+    font-weight: bolder;
+}
+
+.result-item span.confidence.negative {
+    color : rgb(64, 155, 64);
+    font-weight: bolder;
+}
+
+.result-item span.result.positive {
+    color : rgb(155, 64, 64);
+    font-weight: bolder;
+}
+
+.result-item span.confidence.positive {
+    color : rgb(155, 64, 64);
+    font-weight: bolder;
+}

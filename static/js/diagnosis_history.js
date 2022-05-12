@@ -47,7 +47,6 @@ jQuery(() => {
                         row['result']
                     ]).draw()
                 }
-                console.log(res.data['payload'])
             })
             .catch(err => {
                 if(err.response)
