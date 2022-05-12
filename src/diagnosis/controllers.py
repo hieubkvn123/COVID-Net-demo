@@ -380,6 +380,8 @@ class DiagnosisController:
                     'msg' : msg
                 }
 
+                payload.append(result)
+
 
             return {
                 '_code' : 'success',
