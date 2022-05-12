@@ -93,4 +93,5 @@ div.dataTables_wrapper {
   margin-top : 12px;
   float: left;
   font-weight: bolder;
+  display: flex;
 }

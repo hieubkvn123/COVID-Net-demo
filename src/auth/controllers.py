@@ -50,12 +50,12 @@ class AuthController:
 			# If length of results < 1 - invalid
 			if(len(rows) < 1):
 				flash("Invalid username. Please try again", "danger")
-				return redirect(url_for('login_page'))
+				return redirect(url_for('authentication.auth_views_login'))
 			else: # If username exists
 				real_password = rows[0]['password']
 				if(real_password != hash_password):
 					flash("Invalid password. Please try again", "danger")
-					return redirect(url_for("login_page"))
+					return redirect(url_for("authentication.auth_views_login"))
 				else: # Correct password and username
 					# Generate a JWT token
 					token = jwt.encode({'username' : account_id,
@@ -66,9 +66,6 @@ class AuthController:
 					response = make_response(redirect(url_for(DEFAULT_ROUTE_AUTHENTICATED)))
 					response.set_cookie('access_token', token)
 					return response
-
-			# return invalid response if all of the above fails
-			return make_response('Could not verify!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
 	def logout(self):
 		'''
