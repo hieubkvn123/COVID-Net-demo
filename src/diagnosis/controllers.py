@@ -78,6 +78,47 @@ class DiagnosisController:
 
         return err_msg
 
+    def make_prediction(self, folder, xray_image):
+        '''
+            | @Route None
+            | @Access None
+            | @Desc : An utility function that upload an X-Ray image to a folder in the upload directory then create the 
+              diagnosis prediction result by making request to the computing server. The function returns the diagnosis 
+              result, confidence, the X-Ray image's URL after uploaded and the date-time when prediction is made.
+        '''
+        
+        # Create folder for patient
+        patient_folder = os.path.join(IMG_UPLOAD_FOLDER, folder)
+        if(not os.path.exists(patient_folder)):
+            os.mkdir(patient_folder)
+
+        # Store image
+        if xray_image and self.allowed_file(xray_image.filename):
+            print('[INFO] Image uploaded ... ')
+            file_extension = xray_image.filename.split(".")[-1]
+            filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + f".{file_extension}"
+            filename = secure_filename(filename)
+            xray_image.save(os.path.join(IMG_UPLOAD_FOLDER, folder, filename))
+
+        # Gather information to create record
+        xray_img_url = f'/static/images/{folder}/{filename}'
+        date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Post image to computing server for diagnosis
+        url = f'http://{COMPUTING_SERVER_IP}:{COMPUTING_SERVER_PORT}/predict_single_image'
+        with open(os.path.join(IMG_UPLOAD_FOLDER, folder, filename), 'rb') as f:
+            files = {'xray' : f}
+            res = requests.post(url, files=files)
+            if(res.status_code != 200):
+                return None, None, None, None
+
+            payload = res.json()
+        
+        result = payload['_label']
+        confidence = payload['_confidence']
+
+        return result, confidence,xray_img_url, date_time
+
     @token_required
     def get_diagnosis(self):
         '''
@@ -168,36 +209,14 @@ class DiagnosisController:
         if(request.method == 'POST'):
             # For retrieving staff's account id
             token = request.cookies.get('access_token')
+            by_staff_id = username_from_token(token)
 
             xray_image = request.files['xray']
             nric = request.form['nric']
 
-            # Create folder for patient
-            patient_folder = os.path.join(IMG_UPLOAD_FOLDER, nric)
-            if(not os.path.exists(patient_folder)):
-                os.mkdir(patient_folder)
-
-            # Store image
-            if xray_image and self.allowed_file(xray_image.filename):
-                print('[INFO] Image uploaded ... ')
-                file_extension = xray_image.filename.split(".")[-1]
-                filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + f".{file_extension}"
-                filename = secure_filename(filename)
-                xray_image.save(os.path.join(IMG_UPLOAD_FOLDER, nric, filename))
-
-            # Gather information to create record
-            xray_img_url = f'/static/images/{nric}/{filename}'
-            date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            by_staff_id = username_from_token(token)
-
-            # Post image to computing server for diagnosis
-            url = f'http://{COMPUTING_SERVER_IP}:{COMPUTING_SERVER_PORT}/predict_single_image'
-            with open(os.path.join(IMG_UPLOAD_FOLDER, nric, filename), 'rb') as f:
-                files = {'xray' : f}
-                res = requests.post(url, files=files).json()
-            
-            result = res['_label']
-            confidence = res['_confidence']
+            # Make prediction
+            result, confidence, xray_img_url, date_time = self.make_prediction(nric, xray_image)
+            if(result is None) : return { '_code' : 'failed', 'msg' : 'Something is wrong with the connection to computing server' }, 400
 
             # Store diagnosis result
             results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
@@ -297,5 +316,74 @@ class DiagnosisController:
             return {
                 '_code' : 'success',
                 'payload' : results['payload']
+            }
+
+    @token_required 
+    def create_batch_diagnosis(self):
+        '''
+            | @Route /diagnosis/create_batch_diagnosis POST
+            | @Access Private
+            | @Desc : Used to make multiple diagnosis using images named as existing patients' NRIC numbers.
+        '''
+
+        if(request.method == 'POST'):
+            # For retrieving staff's account id
+            token = request.cookies.get('access_token')
+            by_staff_id = username_from_token(token)
+
+            # Retrieve files from user's data form
+            files = request.files
+            payload = []
+            
+            for key, _file in files.items():
+                filename = _file.filename 
+                nric = filename.split('.')[0].split('_')[0]
+                msg = 'Diagnosis created'
+                result_code = 'success'
+
+                # Check if the nric exists
+                results = self._entity_patient_record.list_by_key(nric)
+                if(results["_code"] == "query_error"): return { '_code' : 'failed', 'msg' : results['err_msg'] }, 400
+
+                # If the record exists
+                if(isinstance(results['payload'], list)):
+                    if(len(results['payload']) < 1):
+                        payload.append({
+                            '_code' : 'failed',
+                            'nric' : nric,
+                            'result' : 'NONE',
+                            'confidence' : 'NONE',
+                            'xray_img_url' : 'NONE',
+                            'msg' : 'Failed to retrieve patient info or patient does not exist'
+                        })
+
+                        continue
+
+                # Make prediction
+                result, confidence, xray_img_url, date_time = self.make_prediction(nric, _file)
+                if(result is None):
+                    result_code = 'failed'
+                    msg = 'Connection to computing server experienced some problem'
+                else:
+                    # Store diagnosis result
+                    results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
+                    if(results["_code"] == "query_error"): 
+                        result_code = 'failed'
+                        msg = 'Failed to store diagnosis result'
+
+                result = {
+                    '_code' : result_code,
+                    'nric' : nric,
+                    'result' : result,
+                    'confidence' : confidence,
+                    'xray_img_url' : xray_img_url,
+                    'msg' : msg
+                }
+
+
+            return {
+                '_code' : 'success',
+                'msg' : 'All images processed',
+                'payload' : payload
             }
 

@@ -13,7 +13,8 @@ diagnosis_routes.add_url_rule("/create_diagnosis", "records_controllers_create_d
 diagnosis_routes.add_url_rule("/create_existing_diagnosis", "records_controllers_create_existing_diagnosis", controller.create_existing_diagnosis, methods=['POST']) # Create existing diagnosis
 diagnosis_routes.add_url_rule("/get_diagnosis", "records_controllers_get_diagnosis", controller.get_diagnosis, methods=['POST']) # View one diagnosis
 diagnosis_routes.add_url_rule("/delete_diagnosis", "records_controllers_delete_diagnosis", controller.delete_diagnosis, methods=['POST']) # Delete diagnosis
-diagnosis_routes.add_url_rule("/search_diagnosis", "records_controllers_search_diagnosis", controller.search_diagnosis, methods=['POST']) # Delete diagnosis
+diagnosis_routes.add_url_rule("/search_diagnosis", "records_controllers_search_diagnosis", controller.search_diagnosis, methods=['POST']) # Search diagnosis
+diagnosis_routes.add_url_rule("/create_batch_diagnosis", "records_controllers_create_batch_diagnosis", controller.create_batch_diagnosis, methods=['POST']) # Batch diagnosi
 
 # Register endpoints for all view functions
 diagnosis_routes.add_url_rule('/list', "records_views_list", view.list_view, methods=['GET']) # View all diagnosis records
