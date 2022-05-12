@@ -16,8 +16,12 @@
 	cursor: pointer;
 }
 
-body {
+/* body {
 	background: #98b4d4;
+} */
+
+button.btn {
+	padding : 12px;
 }
 
 #toast-container > .toast-error { background-color: #BD362F; }

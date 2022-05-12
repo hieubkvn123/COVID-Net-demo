@@ -20,42 +20,33 @@
 {% endblock %}
 
 <!-- Insert main contents -->
-{% block content %}
 {% set active_page = "list_diagnosis" %}
-{% include 'navbar.html' %}
-{% include 'subnavbar.html' %}
+{% include 'subnavbar-draft.html' %}
+
+{% block content %}
 {% include 'patient-diagnosis-modal.html' %}
 
-<!-- Main contents -->
-{% include 'user-info-modal.html' %}
-<table class="record-table fadeIn hidden" style="max-height:80vh">
-<!-- Create records form -->
-<td rowspan="2" style="width:45%;vertical-align:top;">
-    <h2 style="font-weight: 900;">Patient Diagnosis Records</h2>
-<br>
-<br>
-  <table class="table hover" id="sortTable">
-    <thead>
-      <tr>
-        <th  class="_border">NRIC</th>
-        <th  class="_border">Name</th>
-        <th  class="_border">Date-Time Created</th>
-        <th  class="_border">Diagnosis Result</th>
+<div class="record-view">
+<h2>Patient Diagnosis</h2>
+<table class="table hover" id="sortTable">
+  <thead>
+    <tr>
+      <th  class="_border">NRIC</th>
+      <th  class="_border">Name</th>
+      <th  class="_border">Date-Time Created</th>
+      <th  class="_border">Diagnosis Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in range(records|length) %}
+      <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#diagnosisModal">
+        <td  class="_border">{{ records[i]['nric_fin'] }}</td>
+        <td  class="_border">{{ records[i]['name'] }}</td>
+        <td  class="_border">{{ records[i]['date_time'] }}</td>
+        <td  class="_border" style="color: {{ 'red' if(records[i]['result'] == 'positive') else 'gray' if(records[i]['result'] == 'None') else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
       </tr>
-    </thead>
-    <tbody>
-      {% for i in range(records|length) %}
-        <tr class="_border record-list-item {{ records[i]['nric_fin'] }} visible" id="{{ records[i]['nric_fin'] }}" data-toggle="modal" data-target="#diagnosisModal">
-          <td  class="_border">{{ records[i]['nric_fin'] }}</td>
-          <td  class="_border">{{ records[i]['name'] }}</td>
-          <td  class="_border">{{ records[i]['date_time'] }}</td>
-          <td  class="_border" style="color: {{ 'red' if(records[i]['result'] == 'positive') else 'gray' if(records[i]['result'] == 'None') else 'green'}}; font-weight:bolder">{{ records[i]['result'].upper() }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  </td>
+    {% endfor %}
+  </tbody>
 </table>
-
-
+</div>
 {% endblock %}

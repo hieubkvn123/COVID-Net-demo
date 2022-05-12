@@ -1,0 +1,3 @@
+jQuery(() => {
+    $(".input-images").imageUploader()
+})

@@ -1,5 +1,4 @@
 from flask import request, render_template
-
 from src.entities.diagnosis import Diagnosis
 from utils.tokens import token_required, username_from_token
 
@@ -60,7 +59,7 @@ class DiagnosisView:
         '''
             | @Route /diagnosis/create GET
             | @Access Private
-            | @Desc : Display the create diagnosis for existing patient using their NRIC and X-Ray images.
+            | @Desc : Display the UI for creating diagnosis for existing patient using their NRIC and X-Ray images.
 
             |
         '''
@@ -69,4 +68,17 @@ class DiagnosisView:
         username = username_from_token(token) 
 
         return render_template('user-create-diagnosis.html', **{'username' : username})
+
+    @token_required
+    def batch_prediction_view(self):
+        '''
+            | @Route /diagnosis/batch_prediction GET
+            | @Access Private
+            | @Desc : Display the UI for batch prediction of existing patients' in the database.
+        '''
+
+        token = request.cookies.get('access_token')
+        username = username_from_token(token) 
+
+        return render_template('user-batch-prediction.html', **{'username' : username})
         

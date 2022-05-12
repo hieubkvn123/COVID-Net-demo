@@ -19,3 +19,4 @@ diagnosis_routes.add_url_rule("/search_diagnosis", "records_controllers_search_d
 diagnosis_routes.add_url_rule('/list', "records_views_list", view.list_view, methods=['GET']) # View all diagnosis records
 diagnosis_routes.add_url_rule('/search', "records_views_search", view.search_view, methods=['GET']) 
 diagnosis_routes.add_url_rule('/create', "records_views_create", view.create_view, methods=['GET']) 
+diagnosis_routes.add_url_rule('/batch_prediction', "records_views_batch_prediction", view.batch_prediction_view, methods=['GET']) 

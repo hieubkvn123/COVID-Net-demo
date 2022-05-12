@@ -36,9 +36,11 @@
     {% block scripts %} {% endblock %}
     {% block stylesheets %} {% endblock %}
   </head>
-<body>
-  {% block content %} 
+<body id="body-pd">
+  <div class="height-100 bg-light" style="margin-left:6vw;background-color: transparent;">
+    {% block content %} 
 
-  {% endblock %}
+    {% endblock %}
+  </div>
 </body>
 </html>

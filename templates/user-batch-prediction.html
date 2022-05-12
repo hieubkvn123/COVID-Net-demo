@@ -1,0 +1,44 @@
+<!-- Prototype page for main user page -->
+{% extends 'base.html' %}
+
+{% block title %} Welcome back {{ username }} {% endblock %}
+
+<!-- Insert stylesheets -->
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/list_diagnosis.css"/>
+<link rel="stylesheet" href="/static/css/search_diagnosis.css"/>
+<link rel="stylesheet" href="/static/css/muiltiple-img-uploader.css"/>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+<!-- Insert javascript -->
+{% block scripts %}
+<script src="/static/js/create_diagnosis.js"></script>
+<script src="/static/js/update_delete_diagnosis.js"></script>
+<script src="/static/js/search_diagnosis.js"></script>
+<script src="/static/js/multiple-img-uploader.js"></script>
+<script src="/static/js/batch-prediction.js"></script>
+
+{% endblock %}
+
+<!-- Insert main contents -->
+{% set active_page = "batch_prediction" %}
+{% include 'subnavbar-draft.html' %}
+{% block content %}
+<!-- Main contents -->
+<div class="record-view">
+    <h2 style="font-weight: 900;">Upload X-Rays</h2>
+    <br>
+    <br>
+
+    <form method="POST" id="multiple-img-uploader" enctype="multipart/form-data">
+        <div class="input-field">
+            <label class="active">Photos</label>
+            <div class="input-images" style="padding-top: .5rem;"></div>
+        </div>
+
+        <button>Submit and display data</button>
+
+    </form>
+</div>
+{% endblock %}

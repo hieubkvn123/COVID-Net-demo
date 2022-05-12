@@ -88,3 +88,9 @@ div.dataTables_wrapper {
 .rows-disabled {
   pointer-events: none;
 }
+
+.record-view h2{
+  margin-top : 12px;
+  float: left;
+  font-weight: bolder;
+}

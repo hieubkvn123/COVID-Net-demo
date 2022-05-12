@@ -19,20 +19,16 @@
 {% endblock %}
 
 <!-- Insert main contents -->
-{% block content %}
 {% set active_page = "list_record" %}
-{% include 'navbar.html' %}
-{% include 'subnavbar.html' %}
+{% include 'subnavbar-draft.html' %}
+
+{% block content %}
 {% include 'patient-record-modal.html' %}
 
 <!-- Main contents -->
 {% include 'user-info-modal.html' %}
-<table class="record-table fadeIn hidden" style="max-height:80vh">
-<!-- Create records form -->
-<td rowspan="2" style="width:45%;vertical-align:top;">
-    <h2 style="font-weight: 900;">Patient Records</h2>
-<br>
-<br>
+<div class="record-view fadeIn hidden">
+  <h2>Patient Records</h2>
   <table class="table hover" id="sortTable">
     <thead>
       <tr>
@@ -55,8 +51,6 @@
       {% endfor %}
     </tbody>
   </table>
-  </td>
-</table>
-
+</div>
 
 {% endblock %}

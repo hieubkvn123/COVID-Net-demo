@@ -14,11 +14,10 @@
 {% endblock %}
 
 <!-- Insert main contents -->
-{% block content %}
 {% set active_page = "create_record" %}
-{% include 'navbar.html' %}
-{% include 'subnavbar.html' %}
+{% include 'subnavbar-draft.html' %}
 
+{% block content %}
 <!-- Main contents -->
 <table class="record-table fadeIn hidden">
     <thead>

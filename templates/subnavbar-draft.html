@@ -1,0 +1,23 @@
+<script src="/static/js/subnavbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"/>
+<link rel="stylesheet" href="/static/css/subnavbar.css"/>
+<div class="l-navbar" id="nav-bar" style="width:10vw">
+    <nav class="nav">
+        <div> 
+            <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">BBBootstrap</span> </a>
+            <div class="nav_list"> 
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'create_record' }}" href="/records/create">Create Records</a>
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'create_diagnosis' }}" href="/diagnosis/create">Create Diagnosis</a>
+
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'list_record' }}" href="/records/list">View Records</a>
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'list_diagnosis' }}" href="/diagnosis/list">View Diagnosis</a>
+
+                <!-- Add-on functionalities -->
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'search_diagnosis' }}" href="/diagnosis/search">Diagnosis History</a>
+                <a class="nav_link nav-item nav-link {{ 'active' if active_page == 'batch_prediction' }}" href="/diagnosis/batch_prediction">Batch Prediction</a>
+
+            </div>
+        </div> <a href="/auth/logout" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+    </nav>
+</div>
