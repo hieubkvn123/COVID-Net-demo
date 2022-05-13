@@ -24,6 +24,10 @@ button.btn {
 	padding : 12px;
 }
 
+body#body-pd {
+	background-color: #f8f9fa;
+}
+
 #toast-container > .toast-error { background-color: #BD362F; }
 #toast-container > .toast-success { background-color: #1eb650; }
 #toast-container > .toast-info { background-color: #07688f; }
