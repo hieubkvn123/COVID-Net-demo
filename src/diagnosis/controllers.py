@@ -1,5 +1,7 @@
 import os
 import re
+import cv2
+import base64
 import datetime
 import requests
 import numpy as np
@@ -88,8 +90,8 @@ class DiagnosisController:
               To check if an X-Ray image is valid, compare the mean channel-wise standard deviation to a fixed threshold.
         '''
 
-        img = Image.open(img_file).convert("RGB")
-        img = np.array(img)
+        img = np.fromstring(img_file.read(), dtype=np.uint8)
+        img = cv2.imdecode(img, cv2.IMREAD_COLOR)
 
         mean_channel_std = np.std(img, axis=2).mean()
         if(mean_channel_std > std_threshold):
@@ -234,13 +236,6 @@ class DiagnosisController:
             xray_image_copy = xray_image
             nric = request.form['nric']
 
-            # Check if image is valid
-            if(not self.validate_image(xray_image_copy)):
-                return {
-                    '_code' : 'failed',
-                    'msg' : 'Please upload a valid X-Ray image'
-                }, 400
-
             # Make prediction
             result, confidence, xray_img_url, date_time = self.make_prediction(nric, xray_image)
             if(result is None) : return { '_code' : 'failed', 'msg' : 'Something is wrong with the connection to computing server' }, 400
@@ -367,20 +362,6 @@ class DiagnosisController:
                 nric = filename.split('.')[0].split('_')[0]
                 msg = 'Diagnosis created'
                 result_code = 'success'
-
-                # Check if the X-Ray image is valid
-                _file_copy = _file
-                if(not self.validate_image(_file_copy)):
-                    payload.append({
-                        '_code' : 'failed',
-                            'nric' : nric,
-                            'result' : 'NONE',
-                            'confidence' : 'NONE',
-                            'xray_img_url' : 'NONE',
-                            'msg' : 'X-Ray image is invalid'
-                    })
-
-                    continue
 
                 # Check if the nric exists
                 results = self._entity_patient_record.list_by_key(nric)
