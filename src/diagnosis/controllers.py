@@ -135,10 +135,25 @@ class DiagnosisController:
 
             payload = res.json()
         
+        if(payload['_code'] == 'failed'):
+            return {
+                '_code' : 'failed',
+                'msg' : payload['msg']
+            }
+
         result = payload['_label']
         confidence = payload['_confidence']
 
-        return result, confidence,xray_img_url, date_time
+        return {
+            '_code' : 'success',
+            'msg' : 'Prediction successful',
+            'payload' : {
+                'result' : result,
+                'confidence' : confidence,
+                'xray_img_url' : xray_img_url,
+                'date_time' : date_time
+            }
+        }
 
     @token_required
     def get_diagnosis(self):
@@ -233,12 +248,14 @@ class DiagnosisController:
             by_staff_id = username_from_token(token)
 
             xray_image = request.files['xray']
-            xray_image_copy = xray_image
             nric = request.form['nric']
 
             # Make prediction
-            result, confidence, xray_img_url, date_time = self.make_prediction(nric, xray_image)
-            if(result is None) : return { '_code' : 'failed', 'msg' : 'Something is wrong with the connection to computing server' }, 400
+            results = self.make_prediction(nric, xray_image)
+            if(results['_code'] == 'failed') : return { '_code' : 'failed', 'msg' : results['msg'] }, 400
+            
+            pred_payload = results['payload']
+            result, confidence, xray_img_url, date_time = pred_payload['result'], pred_payload['confidence'], pred_payload['xray_img_url'], pred_payload['date_time']
 
             # Store diagnosis result
             results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
@@ -382,12 +399,16 @@ class DiagnosisController:
                         continue
 
                 # Make prediction
-                result, confidence, xray_img_url, date_time = self.make_prediction(nric, _file)
-                if(result is None):
+                results = self.make_prediction(nric, _file)
+                result, confidence, xray_img_url, date_time = None, None, None, None
+                if(results['_code'] == 'failed'):
                     result_code = 'failed'
-                    msg = 'Connection to computing server experienced some problem'
+                    msg = results['msg']
+                    result, confidence, xray_img_url = 'INVALID', 'NONE', 'NONE'
                 else:
                     # Store diagnosis result
+                    pred_payload = results['payload']
+                    result, confidence, xray_img_url, date_time = pred_payload['result'], pred_payload['confidence'], pred_payload['xray_img_url'], pred_payload['date_time']
                     results = self._entity_diagnosis.insert(nric, by_staff_id, date_time, result, confidence, xray_img_url)
                     if(results["_code"] == "query_error"): 
                         result_code = 'failed'

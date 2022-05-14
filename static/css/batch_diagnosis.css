@@ -27,3 +27,13 @@
     color : rgb(155, 64, 64);
     font-weight: bolder;
 }
+
+.result-item span.result.INVALID {
+    color : rgb(146, 146, 75);
+    font-weight: bolder;
+}
+
+.result-item span.confidence.INVALID {
+    color : rgb(146, 146, 75);
+    font-weight: bolder;
+}
