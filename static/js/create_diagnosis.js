@@ -105,4 +105,15 @@ jQuery(() => {
                 })
         }
     })
+
+    // Event handler for clicking the reset form
+    $("#reset_create_record_btn").on("click", () => {
+        $("#diagnosis-result").empty()
+        $("#confidence").empty()
+    })
+
+    $("#reset_create_existing_diagnosis_btn").on("click", () => {
+        $("#diagnosis-result").empty()
+        $("#confidence").empty()
+    })
 })
