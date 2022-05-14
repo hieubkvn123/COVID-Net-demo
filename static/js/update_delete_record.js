@@ -49,6 +49,26 @@ jQuery(() => {
 
                 // Close modal
                 close_patient_modal()
+
+                // Update rows in the client side
+                let new_name = `${fname} ${lname}`
+                let temp = table.row(row_id).data()
+                temp[0] = nric 
+                temp[1] = new_name
+                temp[2] = phone
+                temp[3] = gender 
+                temp[4] = dob
+                $('#sortTable').dataTable().fnUpdate(temp,row_id,undefined,false);
+
+                // Modify the rest of the rows with the same NRIC
+                table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                    var data = this.data();
+
+                    if(data[0] === nric) {
+                        data[1] = new_name 
+                        $('#sortTable').dataTable().fnUpdate(data,rowIdx,undefined,false);
+                    }
+                } );
             })
             .catch(err => {
                 if(err.response)
@@ -56,26 +76,6 @@ jQuery(() => {
                 else
                     console.log(err)
             })
-        
-        // Update rows in the client side
-        let new_name = `${fname} ${lname}`
-        let temp = table.row(row_id).data()
-        temp[0] = nric 
-        temp[1] = new_name
-        temp[2] = phone
-        temp[3] = gender 
-        temp[4] = dob
-        $('#sortTable').dataTable().fnUpdate(temp,row_id,undefined,false);
-
-        // Modify the rest of the rows with the same NRIC
-        table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-            var data = this.data();
-
-            if(data[0] === nric) {
-                data[1] = new_name 
-                $('#sortTable').dataTable().fnUpdate(data,rowIdx,undefined,false);
-            }
-        } );
     })
 
     // Event handler for clicking the delete button

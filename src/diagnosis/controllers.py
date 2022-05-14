@@ -2,6 +2,8 @@ import os
 import re
 import datetime
 import requests
+import numpy as np
+from PIL import Image
 from flask import request, url_for, redirect
 from werkzeug.utils import secure_filename
 from src.entities.patient_records import PatientRecords
@@ -77,6 +79,23 @@ class DiagnosisController:
             err_msg += "Phone number must include only digits"
 
         return err_msg
+
+    def validate_image(self, img_file, std_threshold=10):
+        '''
+            | @Route None
+            | @Access None
+            | @Desc : An utility function to check if an uploaded image is an X-Ray image or just a regular image.
+              To check if an X-Ray image is valid, compare the mean channel-wise standard deviation to a fixed threshold.
+        '''
+
+        img = Image.open(img_file).convert("RGB")
+        img = np.array(img)
+
+        mean_channel_std = np.std(img, axis=2).mean()
+        if(mean_channel_std > std_threshold):
+            return False 
+
+        return True
 
     def make_prediction(self, folder, xray_image):
         '''
@@ -212,7 +231,15 @@ class DiagnosisController:
             by_staff_id = username_from_token(token)
 
             xray_image = request.files['xray']
+            xray_image_copy = xray_image
             nric = request.form['nric']
+
+            # Check if image is valid
+            if(not self.validate_image(xray_image_copy)):
+                return {
+                    '_code' : 'failed',
+                    'msg' : 'Please upload a valid X-Ray image'
+                }, 400
 
             # Make prediction
             result, confidence, xray_img_url, date_time = self.make_prediction(nric, xray_image)
@@ -340,6 +367,20 @@ class DiagnosisController:
                 nric = filename.split('.')[0].split('_')[0]
                 msg = 'Diagnosis created'
                 result_code = 'success'
+
+                # Check if the X-Ray image is valid
+                _file_copy = _file
+                if(not self.validate_image(_file_copy)):
+                    payload.append({
+                        '_code' : 'failed',
+                            'nric' : nric,
+                            'result' : 'NONE',
+                            'confidence' : 'NONE',
+                            'xray_img_url' : 'NONE',
+                            'msg' : 'X-Ray image is invalid'
+                    })
+
+                    continue
 
                 # Check if the nric exists
                 results = self._entity_patient_record.list_by_key(nric)
