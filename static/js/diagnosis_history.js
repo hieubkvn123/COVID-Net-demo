@@ -39,7 +39,6 @@ jQuery(() => {
                 let rows = res.data['payload']
                 for(var i = 0; i < rows.length; i++) {
                     let row = rows[i]
-                    console.log(row)
                     table_diagnosis_history.row.add([
                         row['nric_fin'],
                         row['fname'] + ' ' + row['lname'],

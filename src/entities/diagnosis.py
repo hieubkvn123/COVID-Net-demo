@@ -214,10 +214,10 @@ class Diagnosis:
                     WHERE pr.nric_fin LIKE '%{}%' 
                     AND pr.fname LIKE '%{}%'
                     AND pr.lname LIKE '%{}%'
-                    AND d.result LIKE '%{}%';
+                    AND d.result = '{}';
         '''
 
-        result = "" if result.lower() != "positive" or result.lower() != "positive" else result
+        result = "" if result.lower() != "positive" and result.lower() != "negative" else result
         query = query_format.format(nric, fname, lname, result)
         results = execute_query(query)
 
