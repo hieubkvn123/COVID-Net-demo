@@ -207,27 +207,31 @@ class Diagnosis:
             |
 
         '''
-        query_format = '''SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
-                    FROM DIAGNOSIS d 
-                    JOIN PATIENT_RECORD pr 
-                    ON d.patient_nric_fin=pr.nric_fin 
-                    WHERE pr.nric_fin LIKE '%{}%' 
-                    AND pr.fname LIKE '%{}%'
-                    AND pr.lname LIKE '%{}%'
-                    AND d.result = '{}';
-        '''
-
         result = "" if result.lower() != "positive" and result.lower() != "negative" else result
-        query = query_format.format(nric, fname, lname, result)
-        results = execute_query(query)
+        if(date == "" or date is None):
+            query_format = '''SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                        FROM DIAGNOSIS d 
+                        JOIN PATIENT_RECORD pr 
+                        ON d.patient_nric_fin=pr.nric_fin 
+                        WHERE pr.nric_fin LIKE '%{}%' 
+                        AND pr.fname LIKE '%{}%'
+                        AND pr.lname LIKE '%{}%'
+                        AND d.result LIKE '%{}%';
+            '''
+            query = query_format.format(nric, fname, lname, result)
+        else:
+            query_format = '''SELECT pr.nric_fin, pr.fname, pr.lname, d.date_time, d.result 
+                        FROM DIAGNOSIS d 
+                        JOIN PATIENT_RECORD pr 
+                        ON d.patient_nric_fin=pr.nric_fin 
+                        WHERE pr.nric_fin LIKE '%{}%' 
+                        AND strftime('%Y-%m-%d', d.date_time) == '{}'
+                        AND pr.fname LIKE '%{}%'
+                        AND pr.lname LIKE '%{}%'
+                        AND d.result LIKE '%{}%';
+            '''
+            query = query_format.format(nric, date, fname, lname, result)
 
-        # If the query passed, filter the datetime
-        if(date != "" or date is not None):
-            try:
-                date = datetime.strptime(date, "%Y-%m-%d")
-                results['payload'] = filter(lambda x : datetime.strptime(x['date_time'], "%Y-%m-%d %H:%M:%S") > date, results['payload'])
-                results['payload'] = list(results['payload'])
-            except:
-                print('[INFO] No date-time provided or date-time invalid')
+        results = execute_query(query)
 
         return results
