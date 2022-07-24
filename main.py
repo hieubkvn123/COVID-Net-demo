@@ -20,7 +20,7 @@ app.register_blueprint(diagnosis_routes)
 app.register_blueprint(auth_routes)
 app.register_blueprint(records_routes)
 
-# Draft routes
+# Draft routers
 @app.route('/kaya', methods=['GET'])
 def kaya():
 	return {
