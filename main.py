@@ -20,6 +20,16 @@ app.register_blueprint(diagnosis_routes)
 app.register_blueprint(auth_routes)
 app.register_blueprint(records_routes)
 
+# Draft routes
+@app.route('/kaya', methods=['GET'])
+def kaya():
+	return {
+		'historical_values' : [
+			{'date' : '2022-07-21 11:32:21', 'balance' : 0},
+			{'date' : '2022-07-22 5:34:21', 'balance' : 12.0}
+		]
+	}
+
 # Default routing
 @app.route('/', methods=['GET'])
 def default_route():
